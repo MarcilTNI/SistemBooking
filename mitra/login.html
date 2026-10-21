@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masuk Mitra — NamaProduk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="auth-page">
+  <header class="site-header"><div class="container header-inner"><a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">N</span><span data-product-name>NamaProduk</span></a><a class="text-link" href="../index.html">Kembali ke beranda</a></div></header>
+  <main class="auth-main">
+    <section class="auth-card">
+      <p class="eyebrow">Area mitra</p><h1>Masuk ke dashboard</h1><p class="muted">Gunakan akun demo untuk mencoba pengelolaan booking.</p>
+      <form id="login-form" class="auth-form" novalidate>
+        <label for="email">Email</label><input id="email" name="email" type="email" autocomplete="username" required>
+        <label for="password">Kata sandi</label><input id="password" name="password" type="password" autocomplete="current-password" required>
+        <div id="login-error" class="field-error" role="alert" hidden></div>
+        <button class="button button-primary button-full" type="submit">Masuk</button>
+      </form>
+      <div class="demo-accounts"><h2>Akun demo</h2><p><strong>Barbershop Rapi</strong><br><span>rapi@demo.id / demo123</span></p><p><strong>Laundry Bersih</strong><br><span>bersih@demo.id / demo123</span></p><p><strong>Salon Senja</strong><br><span>senja@demo.id / demo123</span></p></div>
+    </section>
+  </main>
+  <script src="../js/api.js"></script><script src="../js/utils.js"></script><script src="../js/login.js"></script>
+</body>
+</html>

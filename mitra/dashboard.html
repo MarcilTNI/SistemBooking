@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Mitra — NamaProduk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+  <header class="site-header"><div class="container header-inner"><a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">N</span><span data-product-name>NamaProduk</span></a><div class="header-actions"><span class="mitra-name" id="header-mitra-name"></span><button class="button button-secondary button-small" id="logout-button" type="button">Keluar</button></div></div></header>
+  <main class="container dashboard-main">
+    <div id="dashboard-error" class="notice notice-error" role="alert" hidden></div>
+    <section class="dashboard-title"><div><p class="eyebrow">Dashboard mitra</p><h1 id="dashboard-business-name">Ringkasan usaha</h1><p>Kelola booking, jadwal, dan layanan usaha kamu.</p></div><a class="text-link" id="public-booking-link" href="../index.html" target="_blank" rel="noopener noreferrer">Lihat halaman booking</a></section>
+    <section class="stats-grid" aria-label="Ringkasan hari ini">
+      <article class="stat-card"><span>Booking hari ini</span><strong id="stat-bookings">—</strong></article>
+      <article class="stat-card"><span>Menunggu konfirmasi</span><strong id="stat-pending">—</strong></article>
+      <article class="stat-card"><span>Slot kosong hari ini</span><strong id="stat-available">—</strong></article>
+    </section>
+    <nav class="dashboard-tabs" aria-label="Bagian dashboard">
+      <button class="tab-button is-active" type="button" data-tab="bookings" aria-selected="true">Booking</button>
+      <button class="tab-button" type="button" data-tab="schedule" aria-selected="false">Jadwal</button>
+      <button class="tab-button" type="button" data-tab="services" aria-selected="false">Layanan</button>
+    </nav>
+    <section class="dashboard-panel" id="panel-bookings" aria-labelledby="tab-bookings">
+      <div class="panel-heading"><div><h2>Booking</h2><p>Periksa dan perbarui status booking pelanggan.</p></div><div class="panel-filters"><label for="booking-date">Tanggal</label><input id="booking-date" type="date"><label class="visually-hidden" for="booking-status">Filter status booking</label><select id="booking-status"><option value="semua">Semua status</option><option value="menunggu">Menunggu</option><option value="diterima">Diterima</option><option value="dibatalkan">Dibatalkan</option></select></div></div>
+      <div id="booking-list" class="booking-list"></div>
+    </section>
+    <section class="dashboard-panel" id="panel-schedule" hidden>
+      <div class="panel-heading"><div><h2>Jadwal harian</h2><p>Tutup atau buka slot 30 menit. Jam yang memiliki booking tidak dapat ditutup.</p></div><div class="panel-filters"><label for="schedule-date">Tanggal</label><input id="schedule-date" type="date"></div></div>
+      <div class="schedule-legend"><span><i class="legend-dot legend-available"></i>Kosong</span><span><i class="legend-dot legend-full"></i>Terisi</span><span><i class="legend-dot legend-pending"></i>Ditutup</span></div>
+      <div id="schedule-grid" class="schedule-grid"></div>
+    </section>
+    <section class="dashboard-panel" id="panel-services" hidden>
+      <div class="panel-heading"><div><h2>Layanan</h2><p>Atur layanan yang tersedia di halaman booking publik.</p></div><button class="button button-primary button-small" id="add-service-button" type="button">Tambah layanan</button></div>
+      <div id="service-list" class="service-admin-list"></div>
+    </section>
+  </main>
+  <dialog id="service-dialog" class="service-dialog">
+    <form id="service-form" method="dialog">
+      <div class="dialog-heading"><h2 id="service-dialog-title">Tambah layanan</h2><button type="button" class="icon-button" id="close-service-dialog" aria-label="Tutup">×</button></div>
+      <input type="hidden" id="service-id">
+      <label for="service-name">Nama layanan</label><input id="service-name" maxlength="80" required>
+      <label for="service-duration">Durasi (menit)</label><input id="service-duration" type="number" min="30" step="30" required>
+      <label for="service-price">Harga (Rupiah)</label><input id="service-price" type="number" min="0" step="1000" required>
+      <div id="service-form-error" class="field-error" role="alert" hidden></div>
+      <div class="dialog-actions"><button class="button button-secondary" type="button" id="cancel-service">Batal</button><button class="button button-primary" type="submit">Simpan layanan</button></div>
+    </form>
+  </dialog>
+  <script src="../js/api.js"></script><script src="../js/utils.js"></script><script src="../js/dashboard.js"></script>
+</body>
+</html>
