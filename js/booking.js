@@ -27,6 +27,7 @@
         showNotFound();
         return;
       }
+      ui.setPageBrand(mitra.nama, "Booking " + mitra.nama + " | " + ui.PRODUCT_NAME, mitra.nama + ", ke bagian atas halaman booking");
       updateWhatsAppLinks("Halo " + mitra.nama + ", saya ingin bertanya mengenai layanan dan booking.");
       layanan = await api.listLayanan(mitra.id);
       weeklySchedule = await api.getJadwalMingguan(mitra.id);

@@ -8,6 +8,7 @@
 
   async function initialize() {
     ui.applyProductName();
+    ui.setPageBrand("Admin", "Admin | " + ui.PRODUCT_NAME);
     renderScheduleInputs();
     addServiceRow();
     document.getElementById("admin-login-form").addEventListener("submit", login);

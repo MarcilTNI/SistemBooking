@@ -16,7 +16,7 @@
         window.location.href = "login.html";
         return;
       }
-      document.getElementById("header-mitra-name").textContent = session.nama;
+      ui.setPageBrand(session.nama, session.nama + " | Dashboard Mitra — " + ui.PRODUCT_NAME);
       document.getElementById("dashboard-business-name").textContent =
         session.nama;
       var bookingLink = document.getElementById("public-booking-link");
