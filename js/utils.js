@@ -35,9 +35,9 @@
     document.querySelectorAll("[data-product-name]").forEach(function (element) {
       element.textContent = PRODUCT_NAME;
     });
-    document.title = document.title.replace(/NamaProduk/g, PRODUCT_NAME);
+    document.title = document.title.replace(/NamaProduk|BookingYukk!/g, PRODUCT_NAME);
     document.querySelectorAll('meta[name="description"]').forEach(function (element) {
-      element.content = element.content.replace(/NamaProduk/g, PRODUCT_NAME);
+      element.content = element.content.replace(/NamaProduk|BookingYukk!/g, PRODUCT_NAME);
     });
   }
 

@@ -2,11 +2,11 @@
 
 ## 1. Gambaran umum
 
-**NamaProduk** adalah prototipe web untuk membantu usaha jasa lokal menerima dan mengelola janji temu secara online. Contoh usaha yang dapat menggunakannya adalah barbershop, salon, laundry, dan bengkel.
+**BookingYukk!** adalah prototipe web untuk membantu usaha jasa lokal menerima dan mengelola janji temu secara online. Contoh usaha yang dapat menggunakannya adalah barbershop, salon, laundry, dan bengkel.
 
 Setiap usaha memiliki halaman booking sendiri yang dapat dibagikan sebagai tautan. Pelanggan membuka tautan tersebut, memilih layanan, tanggal dan waktu, lalu mengirim permintaan booking tanpa membuat akun. Pemilik usaha masuk ke dashboard untuk memeriksa booking, mengubah statusnya, mengatur layanan, serta menyesuaikan jadwal.
 
-Identitas di bagian logo header mengikuti konteks halaman: halaman admin menampilkan **Admin**, dashboard mitra menampilkan nama usaha pemilik yang sedang masuk, dan halaman pelanggan menampilkan nama usaha pada link booking tersebut. Nama platform **NamaProduk** tetap ditampilkan pada halaman utama dan sebagai identitas layanan di bagian footer/metadata.
+Identitas di bagian logo header mengikuti konteks halaman: halaman admin menampilkan **Admin**, dashboard mitra menampilkan nama usaha pemilik yang sedang masuk, dan halaman pelanggan menampilkan nama usaha pada link booking tersebut. Nama platform **BookingYukk!** tetap ditampilkan pada halaman utama dan sebagai identitas layanan di bagian footer/metadata.
 
 Tujuan sistem ini adalah membuat informasi layanan dan ketersediaan jadwal lebih mudah diakses, mengurangi pemesanan yang hanya dilakukan melalui percakapan manual, serta memberi mitra tempat terpusat untuk mengelola booking.
 
@@ -16,7 +16,7 @@ Sistem memiliki tiga area penggunaan. Dua area pertama digunakan untuk mengelola
 
 ### A. Pengelola platform
 
-Pengelola platform adalah pihak yang mengoperasikan NamaProduk, bukan pemilik usaha mitra. Pengelola masuk melalui `/admin/index.html` untuk:
+Pengelola platform adalah pihak yang mengoperasikan BookingYukk!, bukan pemilik usaha mitra. Pengelola masuk melalui `/admin/index.html` untuk:
 
 - mendaftarkan usaha baru dan menghubungkannya dengan akun pemilik;
 - mengisi nama, kategori, alamat, tautan khusus, dan nomor WhatsApp usaha;
@@ -143,4 +143,4 @@ Sistem ini merupakan prototipe fungsional untuk mendemonstrasikan alur booking u
 
 ## 10. Ringkasan untuk presentasi
 
-> NamaProduk adalah prototipe sistem booking online untuk usaha jasa lokal. Setiap mitra mempunyai link booking khusus yang dapat dibagikan kepada pelanggan. Pelanggan dapat melihat layanan dan jadwal yang tersedia, memilih waktu, lalu memesan tanpa login. Pemilik usaha mengelola booking, layanan, dan jadwal melalui dashboard mitra, sedangkan pengelola platform mendaftarkan usaha dan menghubungkan akun pemilik melalui dashboard admin. Sistem dibuat menggunakan HTML, CSS, dan JavaScript vanilla dengan Supabase sebagai layanan autentikasi dan database PostgreSQL. Pemeriksaan ketersediaan dilakukan kembali di database saat booking disimpan, dan WhatsApp digunakan untuk komunikasi lanjutan antara pelanggan dengan mitra maupun mitra dengan pengelola platform.
+> BookingYukk! adalah prototipe sistem booking online untuk usaha jasa lokal. Setiap mitra mempunyai link booking khusus yang dapat dibagikan kepada pelanggan. Pelanggan dapat melihat layanan dan jadwal yang tersedia, memilih waktu, lalu memesan tanpa login. Pemilik usaha mengelola booking, layanan, dan jadwal melalui dashboard mitra, sedangkan pengelola platform mendaftarkan usaha dan menghubungkan akun pemilik melalui dashboard admin. Sistem dibuat menggunakan HTML, CSS, dan JavaScript vanilla dengan Supabase sebagai layanan autentikasi dan database PostgreSQL. Pemeriksaan ketersediaan dilakukan kembali di database saat booking disimpan, dan WhatsApp digunakan untuk komunikasi lanjutan antara pelanggan dengan mitra maupun mitra dengan pengelola platform.

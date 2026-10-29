@@ -1,7 +1,7 @@
 (function (global) {
   "use strict";
 
-  var PRODUCT_NAME = "NamaProduk";
+  var PRODUCT_NAME = "BookingYukk!";
 
   function client() {
     if (!global.NamaProdukSupabase) {
