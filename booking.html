@@ -12,14 +12,14 @@
   <link rel="stylesheet" href="css/booking.css">
 </head>
 <body>
-  <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">N</span><span data-product-name>NamaProduk</span></a><a class="text-link" href="index.html">Kembali ke beranda</a></div></header>
+  <header class="site-header"><div class="container header-inner"><a class="brand" href="#booking-app" aria-label="Ke bagian atas halaman booking"><span class="brand-mark" aria-hidden="true">N</span><span data-product-name>NamaProduk</span></a><a class="text-link" href="#business-name">Info usaha</a></div></header>
   <main class="container booking-main" id="booking-app">
     <div id="booking-loading" class="notice">Memuat halaman booking…</div>
-    <div id="booking-not-found" class="empty-state" hidden><h1>Mitra tidak ditemukan</h1><p>Periksa kembali tautan booking atau pilih mitra lain.</p><a class="button button-primary" href="index.html">Lihat mitra demo</a></div>
+    <div id="booking-not-found" class="empty-state" hidden><h1>Mitra tidak ditemukan</h1><p>Periksa kembali tautan booking atau kembali ke daftar usaha.</p><a class="button button-primary" href="index.html">Kembali ke daftar usaha</a></div>
     <div id="booking-content" hidden>
       <section class="business-header">
         <p class="eyebrow" id="business-category"></p><h1 id="business-name"></h1>
-        <p id="business-address"></p><p class="business-hours"><strong>Jam operasional:</strong> <span id="business-hours-value"></span></p>
+        <p id="business-address"></p><p class="business-hours"><strong>Jam operasional mingguan:</strong></p><ul class="business-hours-list" id="business-hours-value"></ul>
       </section>
       <div id="booking-error" class="notice notice-error" role="alert" hidden></div>
       <section class="booking-step" aria-labelledby="service-heading">
@@ -27,7 +27,12 @@
         <div id="service-list" class="service-grid"></div>
       </section>
       <section class="booking-step" aria-labelledby="date-heading">
-        <div class="step-heading"><span class="step-number">2</span><div><h2 id="date-heading">Pilih tanggal dan waktu</h2><p>Slot yang terisi atau ditutup tidak dapat dipilih.</p></div></div>
+        <div class="step-heading"><span class="step-number">2</span><div><h2 id="date-heading">Pilih tanggal dan waktu</h2><p>Bisa pesan mulai hari ini; jam yang sudah lewat, terisi, atau ditutup tidak dapat dipilih.</p></div></div>
+        <div class="party-size-field">
+          <label for="party-size">Jumlah orang dalam rombongan</label>
+          <input id="party-size" type="number" min="1" max="12" value="1" inputmode="numeric">
+          <p class="field-hint">Rombongan memakai waktu berurutan untuk layanan yang sama, maksimal 12 orang.</p>
+        </div>
         <div id="date-list" class="date-list" aria-label="Pilih tanggal"></div>
         <div class="slot-legend"><span><i class="legend-dot legend-available"></i>Kosong</span><span><i class="legend-dot legend-full"></i>Terisi</span></div>
         <div id="slot-list" class="slot-grid" aria-live="polite"></div>
@@ -55,6 +60,8 @@
     </div>
   </main>
   <footer class="site-footer"><div class="container"><span data-product-name>NamaProduk</span> · Booking usaha lokal</div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
   <script src="js/api.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/booking.js"></script>

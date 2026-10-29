@@ -22,6 +22,7 @@
       var bookingLink = document.getElementById("public-booking-link");
       bookingLink.href =
         "../booking.html?mitra=" + encodeURIComponent(session.slug);
+      await renderAdminContactLink();
       document.getElementById("booking-date").value = today;
       document.getElementById("schedule-date").value = today;
       bindEvents();
@@ -33,12 +34,31 @@
     }
   }
 
+  async function renderAdminContactLink() {
+    var link = document.getElementById("contact-admin-link");
+    try {
+      var phone = await api.getKontakWhatsAppAdmin();
+      if (!phone) {
+        throw new Error("Kontak WhatsApp pengelola belum diatur.");
+      }
+      var message = "Halo pengelola " + ui.PRODUCT_NAME + ", saya dari " + session.nama + ". Saya ingin menghubungi admin platform.";
+      link.href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+      link.hidden = false;
+    } catch (error) {
+      showError(error.message || "Kontak pengelola platform belum dapat dimuat.");
+    }
+  }
+
   function bindEvents() {
     document
       .getElementById("logout-button")
       .addEventListener("click", async function () {
-        await api.logoutMitra();
-        window.location.href = "login.html";
+        try {
+          await api.logoutMitra();
+          window.location.href = "login.html";
+        } catch (error) {
+          showError(error.message || "Tidak dapat keluar. Silakan coba lagi.");
+        }
       });
     document.querySelectorAll(".tab-button").forEach(function (button) {
       button.addEventListener("click", function () {
@@ -54,6 +74,12 @@
     document
       .getElementById("schedule-date")
       .addEventListener("change", renderSchedule);
+    document
+      .getElementById("weekly-hours-list")
+      .addEventListener("change", handleWeeklyHoursToggle);
+    document
+      .getElementById("weekly-hours-form")
+      .addEventListener("submit", saveWeeklyHours);
     document
       .getElementById("booking-list")
       .addEventListener("click", handleBookingAction);
@@ -89,7 +115,10 @@
     document.querySelectorAll(".dashboard-panel").forEach(function (panel) {
       panel.hidden = panel.id !== "panel-" + tab;
     });
-    if (tab === "schedule") renderSchedule();
+    if (tab === "schedule") {
+      renderSchedule();
+      renderWeeklyHours();
+    }
     if (tab === "services") renderServices();
   }
 
@@ -98,6 +127,7 @@
       renderStats(),
       renderBookings(),
       renderSchedule(),
+      renderWeeklyHours(),
       renderServices(),
     ]);
   }
@@ -146,6 +176,8 @@
           "</strong><span>" +
           ui.escapeHtml(item.telepon) +
           " · " +
+          item.jumlahOrang +
+          " orang · " +
           ui.escapeHtml(item.kode) +
           '</span></div><div class="booking-detail"><strong>' +
           ui.escapeHtml(item.layananNama) +
@@ -212,6 +244,8 @@
           var label =
             slot.status === "terisi"
               ? "Terisi"
+              : slot.status === "istirahat"
+                ? "Istirahat"
               : slot.status === "ditutup"
                 ? "Ditutup"
                 : slot.status === "lewat"
@@ -224,7 +258,7 @@
               ? "available"
               : slot.status === "terisi"
                 ? "booked"
-                : slot.status === "ditutup"
+                : slot.status === "ditutup" || slot.status === "istirahat"
                   ? "closed"
                   : "past") +
             '"><strong>' +
@@ -253,6 +287,76 @@
     } catch (error) {
       grid.innerHTML =
         '<div class="empty-panel">' + ui.escapeHtml(error.message) + "</div>";
+    }
+  }
+
+  async function renderWeeklyHours() {
+    var list = document.getElementById("weekly-hours-list");
+    if (!list) return;
+    try {
+      var schedule = await api.getJadwalMingguan(session.id);
+      var byDay = {};
+      schedule.forEach(function (item) { byDay[item.hari] = item; });
+      var dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      list.innerHTML = dayNames.map(function (name, index) {
+        var item = byDay[index] || { buka: false, jamMulai: "", jamSelesai: "", istirahatMulai: "", istirahatSelesai: "" };
+        var disabled = item.buka ? "" : " disabled";
+        return '<fieldset class="weekly-day"><legend class="visually-hidden">' + name + '</legend><div class="weekly-day-heading"><input type="checkbox" id="weekly-open-' + index + '" data-day-open="' + index + '" ' + (item.buka ? "checked" : "") + '><label for="weekly-open-' + index + '"><strong>' + name + '</strong></label></div><div class="weekly-time-field"><label for="weekly-start-' + index + '">Buka<input id="weekly-start-' + index + '" type="time" data-day-field="jam_mulai" value="' + item.jamMulai + '"' + disabled + ' required></label><label for="weekly-end-' + index + '">Tutup<input id="weekly-end-' + index + '" type="time" data-day-field="jam_selesai" value="' + item.jamSelesai + '"' + disabled + ' required></label></div><div class="weekly-time-field"><label for="weekly-break-start-' + index + '">Istirahat mulai<input id="weekly-break-start-' + index + '" type="time" data-day-field="istirahat_mulai" value="' + item.istirahatMulai + '"' + disabled + '></label><label for="weekly-break-end-' + index + '">Istirahat selesai<input id="weekly-break-end-' + index + '" type="time" data-day-field="istirahat_selesai" value="' + item.istirahatSelesai + '"' + disabled + '></label></div></fieldset>';
+      }).join("");
+    } catch (error) {
+      showError(error.message || "Jadwal mingguan belum dapat dimuat.");
+    }
+  }
+
+  function handleWeeklyHoursToggle(event) {
+    var checkbox = event.target.closest("[data-day-open]");
+    if (!checkbox) return;
+    var day = checkbox.dataset.dayOpen;
+    document.querySelectorAll('[id$="-'+ day + '"][data-day-field]').forEach(function (input) {
+      input.disabled = !checkbox.checked;
+      input.required = checkbox.checked && (input.dataset.dayField === "jam_mulai" || input.dataset.dayField === "jam_selesai");
+    });
+  }
+
+  async function saveWeeklyHours(event) {
+    event.preventDefault();
+    var errorBox = document.getElementById("weekly-hours-error");
+    errorBox.hidden = true;
+    var schedule = [];
+    for (var day = 0; day < 7; day += 1) {
+      var isOpen = document.getElementById("weekly-open-" + day).checked;
+      var getTime = function (field) {
+        return document.getElementById("weekly-" + field.replace("_", "-") + "-" + day).value || null;
+      };
+      var start = getTime("start");
+      var end = getTime("end");
+      var breakStart = document.getElementById("weekly-break-start-" + day).value || null;
+      var breakEnd = document.getElementById("weekly-break-end-" + day).value || null;
+      if (isOpen && (!start || !end || start >= end)) {
+        errorBox.textContent = "Jam buka dan tutup harus diisi dengan rentang waktu yang valid.";
+        errorBox.hidden = false;
+        return;
+      }
+      if (isOpen && ((breakStart && !breakEnd) || (!breakStart && breakEnd) || (breakStart && (breakStart < start || breakStart >= breakEnd || breakEnd > end)))) {
+        errorBox.textContent = "Jam istirahat harus berada di antara jam buka dan tutup.";
+        errorBox.hidden = false;
+        return;
+      }
+      schedule.push({
+        hari: day,
+        buka: isOpen,
+        jam_mulai: isOpen ? start : null,
+        jam_selesai: isOpen ? end : null,
+        istirahat_mulai: isOpen ? breakStart : null,
+        istirahat_selesai: isOpen ? breakEnd : null,
+      });
+    }
+    try {
+      await api.simpanJadwalMingguan(session.id, schedule);
+      await Promise.all([renderWeeklyHours(), renderSchedule(), renderStats()]);
+    } catch (error) {
+      errorBox.textContent = error.message || "Jadwal tidak dapat disimpan.";
+      errorBox.hidden = false;
     }
   }
 

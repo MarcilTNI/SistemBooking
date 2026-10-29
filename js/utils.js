@@ -12,6 +12,7 @@
     return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value) || 0);
   }
 
+
   function formatTanggal(value, options) {
     var parts = value.split("-").map(Number);
     return new Intl.DateTimeFormat("id-ID", options || { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(new Date(parts[0], parts[1] - 1, parts[2]));

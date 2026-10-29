@@ -17,6 +17,10 @@
 .service-option strong { margin-bottom: 8px; }
 .service-option span { color: var(--color-muted); font-size: .88rem; }
 .date-list { display: flex; gap: 8px; overflow-x: auto; padding: 2px 1px 10px; scrollbar-width: thin; }
+.business-hours-list { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: -3px 0 0; padding-left: 18px; color: var(--color-muted); font-size: .88rem; }
+.party-size-field { max-width: 340px; margin: 0 0 14px; }
+.party-size-field input { margin-top: 6px; }
+.party-size-field .field-hint { margin-top: 5px; }
 .date-option { flex: 0 0 76px; min-height: 78px; padding: 8px 5px; border: 1px solid var(--color-border); border-radius: 9px; background: var(--color-surface); color: var(--color-text); cursor: pointer; }
 .date-option span, .date-option strong { display: block; text-align: center; }
 .date-option span { color: var(--color-muted); font-size: .74rem; text-transform: capitalize; }

@@ -1,57 +1,122 @@
 <!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Pesan layanan usaha lokal dengan mudah melalui NamaProduk.">
-  <title>NamaProduk — Booking usaha lokal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="NamaProduk, beranda"><span class="brand-mark" aria-hidden="true">N</span><span data-product-name>NamaProduk</span></a>
-      <a class="button button-secondary button-small" href="mitra/login.html">Masuk sebagai mitra</a>
-    </div>
-  </header>
-  <main class="container landing-main">
-    <section class="hero">
-      <p class="eyebrow">Booking lebih praktis</p>
-      <h1>Temukan waktu yang pas untuk layanan lokal pilihanmu.</h1>
-      <p class="hero-copy">Pilih layanan, lihat jadwal yang tersedia, dan buat janji langsung tanpa perlu membuat akun.</p>
-      <a class="button button-primary" href="#mitra">Jelajahi mitra demo</a>
-    </section>
-    <section class="benefits" aria-label="Manfaat NamaProduk">
-      <article class="benefit-card"><span class="benefit-number">01</span><h2>Jadwal jelas</h2><p>Pelanggan dapat melihat waktu yang tersedia sebelum memesan.</p></article>
-      <article class="benefit-card"><span class="benefit-number">02</span><h2>Pesan tanpa akun</h2><p>Alur pemesanan singkat, cukup isi nama dan nomor WhatsApp.</p></article>
-      <article class="benefit-card"><span class="benefit-number">03</span><h2>Kelola dari satu tempat</h2><p>Mitra dapat mengatur booking, layanan, dan jam operasional.</p></article>
-    </section>
-    <section class="partners-section" id="mitra">
-      <div class="section-heading"><div><p class="eyebrow">Coba prototipe</p><h2>Mitra demo</h2></div><p>Pilih usaha untuk melihat halaman booking-nya.</p></div>
-      <div class="partner-grid" id="partner-list" aria-live="polite"><p class="muted">Memuat mitra…</p></div>
-    </section>
-    <p class="demo-note">Prototipe ini menggunakan data demo yang tersimpan di browser.</p>
-  </main>
-  <footer class="site-footer"><div class="container">© <span id="current-year"></span> <span data-product-name>NamaProduk</span> · Prototipe booking usaha lokal</div></footer>
-  <script src="js/api.js"></script>
-  <script src="js/utils.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", async function () {
-      NamaProdukUI.applyProductName();
-      document.getElementById("current-year").textContent = new Date().getFullYear();
-      var list = document.getElementById("partner-list");
-      try {
-        var mitra = await NamaProdukAPI.listMitra();
-        list.innerHTML = mitra.map(function (item) {
-          return '<article class="partner-card"><div><span class="tag">' + NamaProdukUI.escapeHtml(item.kategori) + '</span><h3>' + NamaProdukUI.escapeHtml(item.nama) + '</h3><p>' + NamaProdukUI.escapeHtml(item.alamat) + '</p></div><a class="button button-primary button-small" href="booking.html?mitra=' + encodeURIComponent(item.slug) + '">Lihat halaman booking</a></article>';
-        }).join("");
-      } catch (error) {
-        list.innerHTML = '<p class="notice notice-error">Daftar mitra belum dapat dimuat. Silakan muat ulang halaman.</p>';
-      }
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Pesan layanan usaha lokal dengan mudah melalui NamaProduk."
+    />
+    <title>NamaProduk — Booking usaha lokal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="NamaProduk, beranda"
+          ><span class="brand-mark" aria-hidden="true">N</span
+          ><span data-product-name>NamaProduk</span></a
+        >
+        <a class="button button-secondary button-small" href="mitra/login.html"
+          >Masuk sebagai mitra</a
+        >
+      </div>
+    </header>
+    <main class="container landing-main">
+      <section class="hero">
+        <p class="eyebrow">Booking lebih praktis</p>
+        <h1>Temukan waktu yang pas untuk layanan lokal pilihanmu.</h1>
+        <p class="hero-copy">
+          Pilih layanan, lihat jadwal yang tersedia, dan buat janji langsung
+          tanpa perlu membuat akun.
+        </p>
+        <a class="button button-primary" href="#mitra">Jelajahi usaha</a>
+      </section>
+      <section class="benefits" aria-label="Manfaat NamaProduk">
+        <article class="benefit-card">
+          <span class="benefit-number">01</span>
+          <h2>Jadwal jelas</h2>
+          <p>Pelanggan dapat melihat waktu yang tersedia sebelum memesan.</p>
+        </article>
+        <article class="benefit-card">
+          <span class="benefit-number">02</span>
+          <h2>Pesan tanpa akun</h2>
+          <p>Alur pemesanan singkat, cukup isi nama dan nomor WhatsApp.</p>
+        </article>
+        <article class="benefit-card">
+          <span class="benefit-number">03</span>
+          <h2>Kelola dari satu tempat</h2>
+          <p>Mitra dapat mengatur booking, layanan, dan jam operasional.</p>
+        </article>
+      </section>
+      <section class="partners-section" id="mitra">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Usaha terdaftar</p>
+            <h2>Mitra</h2>
+          </div>
+          <p>Pilih usaha untuk melihat halaman booking-nya.</p>
+        </div>
+        <div class="partner-grid" id="partner-list" aria-live="polite">
+          <p class="muted">Memuat mitra…</p>
+        </div>
+      </section>
+      <p class="demo-note">
+        Informasi mitra dan booking kini menggunakan database bersama.
+      </p>
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        © <span id="current-year"></span>
+        <span data-product-name>NamaProduk</span> · Prototipe booking usaha
+        lokal · <a href="admin/index.html">Kelola platform</a>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        NamaProdukUI.applyProductName();
+        document.getElementById("current-year").textContent =
+          new Date().getFullYear();
+        var list = document.getElementById("partner-list");
+        try {
+          var mitra = await NamaProdukAPI.listMitra();
+          if (!mitra.length) {
+            list.innerHTML =
+              '<div class="empty-panel">Belum ada mitra yang terdaftar.</div>';
+            return;
+          }
+          list.innerHTML = mitra
+            .map(function (item) {
+              return (
+                '<article class="partner-card"><div><span class="tag">' +
+                NamaProdukUI.escapeHtml(item.kategori) +
+                "</span><h3>" +
+                NamaProdukUI.escapeHtml(item.nama) +
+                "</h3><p>" +
+                NamaProdukUI.escapeHtml(item.alamat) +
+                '</p></div><a class="button button-primary button-small" href="booking.html?mitra=' +
+                encodeURIComponent(item.slug) +
+                '">Lihat halaman booking</a></article>'
+              );
+            })
+            .join("");
+        } catch (error) {
+          list.innerHTML =
+            '<p class="notice notice-error">Daftar mitra belum dapat dimuat. Silakan muat ulang halaman.</p>';
+          console.error("Gagal memuat daftar mitra:", error);
+        }
+      });
+    </script>
+  </body>
 </html>

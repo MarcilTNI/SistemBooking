@@ -14,7 +14,7 @@
   <header class="site-header"><div class="container header-inner"><a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">N</span><span data-product-name>NamaProduk</span></a><div class="header-actions"><span class="mitra-name" id="header-mitra-name"></span><button class="button button-secondary button-small" id="logout-button" type="button">Keluar</button></div></div></header>
   <main class="container dashboard-main">
     <div id="dashboard-error" class="notice notice-error" role="alert" hidden></div>
-    <section class="dashboard-title"><div><p class="eyebrow">Dashboard mitra</p><h1 id="dashboard-business-name">Ringkasan usaha</h1><p>Kelola booking, jadwal, dan layanan usaha kamu.</p></div><a class="text-link" id="public-booking-link" href="../index.html" target="_blank" rel="noopener noreferrer">Lihat halaman booking</a></section>
+    <section class="dashboard-title"><div><p class="eyebrow">Dashboard mitra</p><h1 id="dashboard-business-name">Ringkasan usaha</h1><p>Kelola booking, jadwal, dan layanan usaha kamu.</p></div><div class="dashboard-title-actions"><a class="text-link" id="public-booking-link" href="../index.html" target="_blank" rel="noopener noreferrer">Lihat halaman booking</a><a class="button button-secondary button-small" id="contact-admin-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Hubungi pengelola platform</a></div></section>
     <section class="stats-grid" aria-label="Ringkasan hari ini">
       <article class="stat-card"><span>Booking hari ini</span><strong id="stat-bookings">—</strong></article>
       <article class="stat-card"><span>Menunggu konfirmasi</span><strong id="stat-pending">—</strong></article>
@@ -33,6 +33,14 @@
       <div class="panel-heading"><div><h2>Jadwal harian</h2><p>Tutup atau buka slot 30 menit. Jam yang memiliki booking tidak dapat ditutup.</p></div><div class="panel-filters"><label for="schedule-date">Tanggal</label><input id="schedule-date" type="date"></div></div>
       <div class="schedule-legend"><span><i class="legend-dot legend-available"></i>Kosong</span><span><i class="legend-dot legend-full"></i>Terisi</span><span><i class="legend-dot legend-pending"></i>Ditutup</span></div>
       <div id="schedule-grid" class="schedule-grid"></div>
+      <section class="weekly-hours">
+        <div class="panel-heading"><div><h2>Jam operasional mingguan</h2><p>Atur jam buka dan istirahat setiap hari. Perubahan memengaruhi slot yang bisa dipesan.</p></div></div>
+        <form id="weekly-hours-form">
+          <div id="weekly-hours-list" class="weekly-hours-list"></div>
+          <div id="weekly-hours-error" class="field-error" role="alert" hidden></div>
+          <button class="button button-primary" type="submit">Simpan jam operasional</button>
+        </form>
+      </section>
     </section>
     <section class="dashboard-panel" id="panel-services" hidden>
       <div class="panel-heading"><div><h2>Layanan</h2><p>Atur layanan yang tersedia di halaman booking publik.</p></div><button class="button button-primary button-small" id="add-service-button" type="button">Tambah layanan</button></div>
@@ -50,6 +58,7 @@
       <div class="dialog-actions"><button class="button button-secondary" type="button" id="cancel-service">Batal</button><button class="button button-primary" type="submit">Simpan layanan</button></div>
     </form>
   </dialog>
-  <script src="../js/api.js"></script><script src="../js/utils.js"></script><script src="../js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+  <script src="../js/supabase-client.js"></script><script src="../js/api.js"></script><script src="../js/utils.js"></script><script src="../js/dashboard.js"></script>
 </body>
 </html>
