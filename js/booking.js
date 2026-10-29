@@ -27,6 +27,7 @@
         showNotFound();
         return;
       }
+      updateWhatsAppLinks("Halo " + mitra.nama + ", saya ingin bertanya mengenai layanan dan booking.");
       layanan = await api.listLayanan(mitra.id);
       weeklySchedule = await api.getJadwalMingguan(mitra.id);
       document.getElementById("business-category").textContent = mitra.kategori;
@@ -229,7 +230,7 @@
       document.getElementById("booking-content").querySelectorAll(".booking-step").forEach(function (step) { step.hidden = true; });
       document.getElementById("success-code").textContent = booking.kode;
       var message = "Halo " + mitra.nama + ", saya " + name + " membuat booking " + service.nama + " untuk " + partySize + " orang secara berurutan pada " + ui.formatTanggal(date) + " pukul " + booking.jamMulai + "–" + booking.jamSelesai + ". Kode booking: " + booking.kode + ".";
-      document.getElementById("whatsapp-link").href = "https://wa.me/" + mitra.telepon + "?text=" + encodeURIComponent(message);
+      updateWhatsAppLinks(message);
       document.getElementById("booking-success").hidden = false;
       document.getElementById("booking-success").scrollIntoView({ behavior: "smooth", block: "center" });
     } catch (error) {
@@ -246,6 +247,17 @@
     var errorBox = document.getElementById("form-error");
     errorBox.textContent = message;
     errorBox.hidden = false;
+  }
+
+  function updateWhatsAppLinks(message) {
+    var phone = ui.phoneToWhatsApp(mitra.telepon);
+    if (!/^[0-9]{10,15}$/.test(phone)) {
+      throw new Error("Nomor WhatsApp usaha belum valid. Silakan hubungi mitra melalui informasi kontak lain.");
+    }
+    var href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+    document.getElementById("persistent-whatsapp-link").href = href;
+    document.getElementById("persistent-whatsapp-link").hidden = false;
+    document.getElementById("whatsapp-link").href = href;
   }
 
   function formatInputDate(date) {
