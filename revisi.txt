@@ -1,0 +1,15 @@
+di page mitra aku pengen ada:
+"Informasi" berisi 4 card:
+1. Total booking hari ini yang pastinya realtime.
+2. estimasi pendapatan sesuai dengan bookingan yang ada.
+3. menunggu konfirmasi, menampilkan angka dari jumlah pelanggan yang masih menunggu konfirmasi dari mitra.
+4. lalu slot kosonng hari ini sesuai dengan penjadwalan mitranya masing-masing. aku pengen semua fitur yang ada di "Informasi" ini Realtime ya
+
+- navbar yang berisi:
+  1. dashboard = di bagian atas ada "Informasi" lalu dibawahnya ada seperti grafik tren booking mingguan(7hari), lalu ada rasio status reservasi yang menampilkan ada berapa booking yang diterima,menunggu,dan dibatalkan. lalu di bagian bawahnya tampilkan booking terbaru.
+  2. Manajemen booking = di bagian atas ada "Informasi" lalu di bawahnya tampilkan Tabel Manajemen booking, ini berbeda dengan booking terbaru yang ada di page dashboard, karena yang di page ini fiturnya lebih lengkap untuk me manage tabel booking, aku pengen ada tombol menampilkan booking sesuai tanggal yang di atur dan juga tombol yang menampilkan semua booking di semua tanggal. lallu tombol semua status atau per status seperti diterima/menunggu/dibatalkan. terakhir adain input search untuk mencari nama atau kode yang di berikan secara otomatis oleh sistem.
+  3. Jadwal harian = di bagian atas ada "Informasi" lalu di bawahnya ada tabel pengaturan jadwal harian, sama seperti kondisi yang sekarang aja, bisa buka/tutup slot jadwal, lalu bisa mengatur jam jadwal manual.
+  4. pelanggan = di bagian atas ada "Informasi" lalu di bawahnya ada kumpulan pelanggan yang sudah booking dengan tombol hubungi whatsapp nya masing masing ke pelanggan.
+  5. Layanan & harga = di bagian atas ada "Informasi" lalu di bawah ada katalog layanan yang bisa di ubah, hapus atau tambah layanan.
+
+  mungkin segitu dulu, fungsi revisi kali ini aku pengen memisah segala fitur/page ke navbarnya masing-masing supaya mudah dilihat dan di navigasi. aku harap kamu bertanya dulu ke aku untuk memastikan segala bentuk revisi ini setelah itu baru eksekusi

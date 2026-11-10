@@ -15,21 +15,55 @@
   <main class="container dashboard-main">
     <div id="dashboard-error" class="notice notice-error" role="alert" hidden></div>
     <section class="dashboard-title"><div><p class="eyebrow">Dashboard mitra</p><h1 id="dashboard-business-name">Ringkasan usaha</h1><p>Kelola booking, jadwal, dan layanan usaha kamu.</p></div><div class="dashboard-title-actions"><a class="text-link" id="public-booking-link" href="../index.html" target="_blank" rel="noopener noreferrer">Lihat halaman booking</a><a class="button button-secondary button-small" id="contact-admin-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Hubungi pengelola platform</a></div></section>
-    <section class="stats-grid" aria-label="Ringkasan hari ini">
-      <article class="stat-card"><span>Booking hari ini</span><strong id="stat-bookings">—</strong></article>
-      <article class="stat-card"><span>Menunggu konfirmasi</span><strong id="stat-pending">—</strong></article>
-      <article class="stat-card"><span>Slot kosong hari ini</span><strong id="stat-available">—</strong></article>
+    <section class="dashboard-information" aria-labelledby="information-heading">
+      <div class="information-heading"><div><h2 id="information-heading">Informasi hari ini</h2><p>Ringkasan diperbarui saat data booking atau jadwal berubah.</p></div><span class="realtime-status" id="realtime-status" role="status">Menghubungkan pembaruan langsung…</span></div>
+      <div class="stats-grid" aria-label="Ringkasan hari ini">
+        <article class="stat-card"><span>Total booking hari ini</span><strong id="stat-bookings">—</strong></article>
+        <article class="stat-card"><span>Estimasi pendapatan diterima</span><strong id="stat-revenue">—</strong></article>
+        <article class="stat-card"><span>Menunggu konfirmasi</span><strong id="stat-pending">—</strong></article>
+        <article class="stat-card"><span>Slot kosong hari ini</span><strong id="stat-available">—</strong></article>
+      </div>
+      <p class="stats-footnote">Estimasi pendapatan menghitung booking diterima hari ini berdasarkan harga layanan saat ini, bukan laporan pembayaran.</p>
     </section>
-    <nav class="dashboard-tabs" aria-label="Bagian dashboard">
-      <button class="tab-button is-active" type="button" data-tab="bookings" aria-selected="true">Booking</button>
-      <button class="tab-button" type="button" data-tab="schedule" aria-selected="false">Jadwal</button>
-      <button class="tab-button" type="button" data-tab="services" aria-selected="false">Layanan</button>
+    <nav class="dashboard-tabs" role="tablist" aria-label="Navigasi dashboard mitra">
+      <button class="tab-button is-active" id="tab-overview" role="tab" type="button" data-tab="overview" aria-controls="panel-overview" aria-selected="true">Dashboard</button>
+      <button class="tab-button" id="tab-bookings" role="tab" type="button" data-tab="bookings" aria-controls="panel-bookings" aria-selected="false" tabindex="-1">Manajemen booking</button>
+      <button class="tab-button" id="tab-schedule" role="tab" type="button" data-tab="schedule" aria-controls="panel-schedule" aria-selected="false" tabindex="-1">Jadwal harian</button>
+      <button class="tab-button" id="tab-customers" role="tab" type="button" data-tab="customers" aria-controls="panel-customers" aria-selected="false" tabindex="-1">Pelanggan</button>
+      <button class="tab-button" id="tab-services" role="tab" type="button" data-tab="services" aria-controls="panel-services" aria-selected="false" tabindex="-1">Layanan &amp; harga</button>
     </nav>
-    <section class="dashboard-panel" id="panel-bookings" aria-labelledby="tab-bookings">
-      <div class="panel-heading"><div><h2>Booking</h2><p>Periksa dan perbarui status booking pelanggan.</p></div><div class="panel-filters"><label for="booking-date">Tanggal</label><input id="booking-date" type="date"><label class="visually-hidden" for="booking-status">Filter status booking</label><select id="booking-status"><option value="semua">Semua status</option><option value="menunggu">Menunggu</option><option value="diterima">Diterima</option><option value="dibatalkan">Dibatalkan</option></select></div></div>
+    <section class="dashboard-panel overview-grid" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+      <article class="overview-card">
+        <div class="panel-heading"><div><h2 id="overview-heading">Tren booking mingguan</h2><p>Jumlah booking per hari, termasuk hari ini.</p></div></div>
+        <div id="weekly-trend" class="weekly-trend" aria-live="polite"></div>
+      </article>
+      <article class="overview-card">
+        <div class="panel-heading"><div><h2>Rasio status reservasi</h2><p id="status-period">Status booking 7 hari terakhir.</p></div></div>
+        <div id="status-ratio" class="status-ratio" aria-live="polite"></div>
+      </article>
+      <article class="overview-card overview-recent">
+        <div class="panel-heading"><div><h2>Booking terbaru</h2><p>Permintaan booking yang paling baru diterima.</p></div></div>
+        <div id="recent-bookings" class="booking-list"></div>
+      </article>
+    </section>
+    <section class="dashboard-panel" id="panel-bookings" role="tabpanel" aria-labelledby="tab-bookings" hidden>
+      <div class="panel-heading"><div><h2 id="bookings-heading">Manajemen booking</h2><p>Filter berdasarkan tanggal dan status, lalu cari nama pelanggan atau kode booking.</p></div></div>
+      <div class="booking-filters">
+        <label for="booking-date-mode">Rentang tanggal</label>
+        <select id="booking-date-mode"><option value="all">Semua tanggal</option><option value="selected">Tanggal tertentu</option></select>
+        <label for="booking-date">Tanggal</label><input id="booking-date" type="date" disabled>
+        <label for="booking-status">Status</label>
+        <select id="booking-status"><option value="semua">Semua status</option><option value="menunggu">Menunggu</option><option value="diterima">Diterima</option><option value="dibatalkan">Dibatalkan</option></select>
+        <label for="booking-search">Cari booking</label><input id="booking-search" type="search" placeholder="Nama pelanggan atau kode">
+      </div>
+      <p class="booking-result-count" id="booking-result-count" aria-live="polite"></p>
       <div id="booking-list" class="booking-list"></div>
     </section>
-    <section class="dashboard-panel" id="panel-schedule" hidden>
+    <section class="dashboard-panel" id="panel-customers" role="tabpanel" aria-labelledby="tab-customers" hidden>
+      <div class="panel-heading"><div><h2 id="customers-heading">Pelanggan</h2><p>Daftar per booking pelanggan, diurutkan dari permintaan terbaru. Hubungi langsung melalui WhatsApp.</p></div></div>
+      <div id="customer-list" class="customer-list"></div>
+    </section>
+    <section class="dashboard-panel" id="panel-schedule" role="tabpanel" aria-labelledby="tab-schedule" hidden>
       <div class="panel-heading"><div><h2>Jadwal harian</h2><p>Tutup atau buka slot 30 menit. Jam yang memiliki booking tidak dapat ditutup.</p></div><div class="panel-filters"><label for="schedule-date">Tanggal</label><input id="schedule-date" type="date"></div></div>
       <div class="schedule-legend"><span><i class="legend-dot legend-available"></i>Kosong</span><span><i class="legend-dot legend-full"></i>Terisi</span><span><i class="legend-dot legend-pending"></i>Ditutup</span></div>
       <div id="schedule-grid" class="schedule-grid"></div>
@@ -42,8 +76,8 @@
         </form>
       </section>
     </section>
-    <section class="dashboard-panel" id="panel-services" hidden>
-      <div class="panel-heading"><div><h2>Layanan</h2><p>Atur layanan yang tersedia di halaman booking publik.</p></div><button class="button button-primary button-small" id="add-service-button" type="button">Tambah layanan</button></div>
+    <section class="dashboard-panel" id="panel-services" role="tabpanel" aria-labelledby="tab-services" hidden>
+      <div class="panel-heading"><div><h2>Layanan &amp; harga</h2><p>Atur layanan yang tersedia di halaman booking publik.</p></div><button class="button button-primary button-small" id="add-service-button" type="button">Tambah layanan</button></div>
       <div id="service-list" class="service-admin-list"></div>
     </section>
   </main>

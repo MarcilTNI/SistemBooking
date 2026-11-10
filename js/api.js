@@ -55,7 +55,9 @@
       layananNama: relatedService ? relatedService.nama : "Layanan",
       durasi: Number(row.durasi_menit || (relatedService ? relatedService.durasi : 0)),
       jumlahOrang: Number(row.jumlah_orang || 1),
+      hargaLayanan: Number(relatedService ? relatedService.harga : 0),
       tanggal: row.tanggal,
+      dibuatPada: row.dibuat_pada,
       jamMulai: toTime(row.jam_mulai),
       jamSelesai: toTime(row.jam_selesai),
       nama: row.nama,
@@ -115,11 +117,35 @@
     async listBooking(mitraId, tanggal) {
       var query = client()
         .from("booking")
-        .select("id, kode, mitra_id, layanan_id, nama, telepon, tanggal, jam_mulai, jam_selesai, status, jumlah_orang, durasi_menit, layanan ( nama, durasi )")
+        .select("id, kode, mitra_id, layanan_id, nama, telepon, tanggal, jam_mulai, jam_selesai, status, jumlah_orang, durasi_menit, dibuat_pada, layanan ( nama, durasi, harga )")
         .eq("mitra_id", mitraId)
-        .order("jam_mulai");
+        .order("dibuat_pada", { ascending: false });
       if (tanggal) query = query.eq("tanggal", tanggal);
       return throwIfError(await query).map(mapBooking);
+    },
+
+    subscribeDashboardRealtime(mitraId, onChange, onStatus) {
+      var channel = client().channel("mitra-dashboard-" + mitraId);
+      ["booking", "penutupan_jadwal", "jadwal_mingguan", "layanan"].forEach(
+        function (table) {
+          channel.on(
+            "postgres_changes",
+            {
+              event: "*",
+              schema: "public",
+              table: table,
+              filter: "mitra_id=eq." + mitraId,
+            },
+            onChange,
+          );
+        },
+      );
+      channel.subscribe(onStatus);
+      return channel;
+    },
+
+    async unsubscribeDashboardRealtime(channel) {
+      if (channel) await client().removeChannel(channel);
     },
 
     async getSlotTersedia(mitraId, layananId, tanggal, jumlahOrang) {

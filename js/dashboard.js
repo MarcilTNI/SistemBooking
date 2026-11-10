@@ -3,8 +3,10 @@
   var api = window.NamaProdukAPI;
   var ui = window.NamaProdukUI;
   var session;
-  var activeTab = "bookings";
-  var today = formatInputDate(new Date());
+  var today = getJakartaDate();
+  var bookingCache = [];
+  var realtimeChannel;
+  var refreshTimer;
 
   document.addEventListener("DOMContentLoaded", initialize);
 
@@ -26,6 +28,11 @@
       document.getElementById("booking-date").value = today;
       document.getElementById("schedule-date").value = today;
       bindEvents();
+      realtimeChannel = api.subscribeDashboardRealtime(
+        session.id,
+        scheduleRealtimeRefresh,
+        handleRealtimeStatus,
+      );
       await refreshAll();
     } catch (error) {
       showError(
@@ -54,6 +61,7 @@
       .getElementById("logout-button")
       .addEventListener("click", async function () {
         try {
+          await api.unsubscribeDashboardRealtime(realtimeChannel);
           await api.logoutMitra();
           window.location.href = "login.html";
         } catch (error) {
@@ -64,13 +72,24 @@
       button.addEventListener("click", function () {
         activateTab(button.dataset.tab);
       });
+      button.addEventListener("keydown", handleTabKeydown);
     });
+    document
+      .getElementById("booking-date-mode")
+      .addEventListener("change", function (event) {
+        var dateInput = document.getElementById("booking-date");
+        dateInput.disabled = event.target.value !== "selected";
+        renderBookings();
+      });
     document
       .getElementById("booking-date")
       .addEventListener("change", renderBookings);
     document
       .getElementById("booking-status")
       .addEventListener("change", renderBookings);
+    document
+      .getElementById("booking-search")
+      .addEventListener("input", renderBookings);
     document
       .getElementById("schedule-date")
       .addEventListener("change", renderSchedule);
@@ -106,11 +125,11 @@
   }
 
   function activateTab(tab) {
-    activeTab = tab;
     document.querySelectorAll(".tab-button").forEach(function (button) {
       var selected = button.dataset.tab === tab;
       button.classList.toggle("is-active", selected);
       button.setAttribute("aria-selected", String(selected));
+      button.tabIndex = selected ? 0 : -1;
     });
     document.querySelectorAll(".dashboard-panel").forEach(function (panel) {
       panel.hidden = panel.id !== "panel-" + tab;
@@ -122,94 +141,192 @@
     if (tab === "services") renderServices();
   }
 
+  function handleTabKeydown(event) {
+    var tabs = Array.from(document.querySelectorAll(".tab-button"));
+    var current = tabs.indexOf(event.currentTarget);
+    var next = current;
+    if (event.key === "ArrowRight") next = (current + 1) % tabs.length;
+    else if (event.key === "ArrowLeft") next = (current - 1 + tabs.length) % tabs.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    tabs[next].focus();
+    activateTab(tabs[next].dataset.tab);
+  }
+
   async function refreshAll() {
-    await Promise.all([
-      renderStats(),
-      renderBookings(),
-      renderSchedule(),
-      renderWeeklyHours(),
-      renderServices(),
-    ]);
+    try {
+      bookingCache = await api.listBooking(session.id);
+      await Promise.all([
+        renderStats(bookingCache),
+        renderOverview(bookingCache),
+        renderBookings(),
+        renderCustomers(bookingCache),
+        renderSchedule(),
+        renderWeeklyHours(),
+        renderServices(),
+      ]);
+    } catch (error) {
+      showError(error.message || "Data dashboard belum dapat dimuat.");
+    }
   }
 
-  async function renderStats() {
-    var summary = await api.getRingkasan(session.id, today);
-    document.getElementById("stat-bookings").textContent = summary.booking;
-    document.getElementById("stat-pending").textContent = summary.menunggu;
-    document.getElementById("stat-available").textContent = summary.slotKosong;
+  async function renderStats(bookings) {
+    var todayBookings = bookings.filter(function (item) {
+      return item.tanggal === today;
+    });
+    var schedule = await api.getJadwalHarian(session.id, today);
+    var acceptedRevenue = todayBookings.reduce(function (total, item) {
+      return total + (item.status === "diterima" ? item.hargaLayanan * item.jumlahOrang : 0);
+    }, 0);
+    document.getElementById("stat-bookings").textContent = todayBookings.length;
+    document.getElementById("stat-revenue").textContent = ui.formatRupiah(acceptedRevenue);
+    document.getElementById("stat-pending").textContent = todayBookings.filter(function (item) {
+      return item.status === "menunggu";
+    }).length;
+    document.getElementById("stat-available").textContent = schedule.filter(function (slot) {
+      return slot.status === "kosong";
+    }).length;
   }
 
-  async function renderBookings() {
+  function renderBookings() {
+    var mode = document.getElementById("booking-date-mode").value;
     var date = document.getElementById("booking-date").value;
     var status = document.getElementById("booking-status").value;
+    var search = document.getElementById("booking-search").value.trim().toLocaleLowerCase("id");
     var list = document.getElementById("booking-list");
-    var bookings = await api.listBooking(session.id, date);
-    if (status !== "semua")
-      bookings = bookings.filter(function (item) {
-        return item.status === status;
-      });
+    var bookings = bookingCache.filter(function (item) {
+      var matchesDate = mode !== "selected" || item.tanggal === date;
+      var matchesStatus = status === "semua" || item.status === status;
+      var matchesSearch = !search ||
+        item.nama.toLocaleLowerCase("id").includes(search) ||
+        item.kode.toLocaleLowerCase("id").includes(search);
+      return matchesDate && matchesStatus && matchesSearch;
+    }).sort(function (first, second) {
+      if (mode === "selected") return compareBookingDate(first, second);
+      return String(second.dibuatPada || "").localeCompare(String(first.dibuatPada || ""));
+    });
+    document.getElementById("booking-result-count").textContent =
+      bookings.length + " booking ditemukan.";
     if (!bookings.length) {
       list.innerHTML =
-        '<div class="empty-panel">Belum ada booking pada tanggal dan status ini.</div>';
+        '<div class="empty-panel">Tidak ada booking yang cocok dengan filter ini.</div>';
       return;
     }
-    list.innerHTML = bookings
-      .map(function (item) {
-        var statusLabel =
-          item.status.charAt(0).toUpperCase() + item.status.slice(1);
-        var wa =
-          "https://wa.me/" +
-          ui.phoneToWhatsApp(item.telepon) +
-          "?text=" +
-          encodeURIComponent(
-            "Halo " +
-              item.nama +
-              ", saya dari " +
-              session.nama +
-              " terkait booking " +
-              item.kode +
-              ".",
-          );
-        return (
-          '<article class="booking-row"><div class="booking-customer"><strong>' +
-          ui.escapeHtml(item.nama) +
-          "</strong><span>" +
-          ui.escapeHtml(item.telepon) +
-          " · " +
-          item.jumlahOrang +
-          " orang · " +
-          ui.escapeHtml(item.kode) +
-          '</span></div><div class="booking-detail"><strong>' +
-          ui.escapeHtml(item.layananNama) +
-          "</strong><span>" +
-          item.jamMulai +
-          "–" +
-          item.jamSelesai +
-          " · " +
-          ui.escapeHtml(
-            ui.formatTanggal(item.tanggal, { day: "numeric", month: "short" }),
-          ) +
-          '</span></div><span class="status-badge status-' +
-          item.status +
-          '">' +
-          statusLabel +
-          '</span><div class="booking-actions">' +
-          (item.status === "menunggu"
-            ? '<button class="button button-primary" type="button" data-booking-action="diterima" data-id="' +
-              ui.escapeHtml(item.id) +
-              '">Terima</button>'
-            : "") +
-          (item.status !== "dibatalkan"
-            ? '<button class="button button-secondary" type="button" data-booking-action="dibatalkan" data-id="' +
-              ui.escapeHtml(item.id) +
-              '">Batalkan</button>'
-            : "") +
-          '<a class="button button-secondary" href="' +
-          wa +
-          '" target="_blank" rel="noopener noreferrer">WhatsApp</a></div></article>'
-        );
-      })
-      .join("");
+    list.innerHTML = bookings.map(function (item) {
+      return bookingCard(item, true);
+    }).join("");
+  }
+
+  async function renderOverview(bookings) {
+    var lastSevenDays = [];
+    for (var offset = 6; offset >= 0; offset -= 1) {
+      lastSevenDays.push(addDays(today, -offset));
+    }
+    var dailyCounts = lastSevenDays.map(function (date) {
+      return bookings.filter(function (item) {
+        return item.tanggal === date;
+      }).length;
+    });
+    var maxCount = Math.max.apply(null, dailyCounts.concat([1]));
+    document.getElementById("weekly-trend").innerHTML = lastSevenDays.map(function (date, index) {
+      var height = dailyCounts[index] ? Math.max(8, Math.round(dailyCounts[index] / maxCount * 100)) : 0;
+      return '<div class="trend-day"><span class="trend-count">' + dailyCounts[index] + '</span><div class="trend-track" aria-hidden="true"><span style="height:' + height + '%"></span></div><span class="trend-label">' + ui.escapeHtml(ui.formatTanggal(date, { weekday: "short" })) + '</span></div>';
+    }).join("");
+    var weekBookings = bookings.filter(function (item) {
+      return lastSevenDays.indexOf(item.tanggal) !== -1;
+    });
+    var statusCounts = {
+      diterima: countStatus(weekBookings, "diterima"),
+      menunggu: countStatus(weekBookings, "menunggu"),
+      dibatalkan: countStatus(weekBookings, "dibatalkan"),
+    };
+    var total = weekBookings.length;
+    document.getElementById("status-ratio").innerHTML = total
+      ? '<div class="ratio-bar" role="img" aria-label="Diterima ' + statusCounts.diterima + ', menunggu ' + statusCounts.menunggu + ', dibatalkan ' + statusCounts.dibatalkan + '">' +
+        ratioSegment("diterima", statusCounts.diterima, total) +
+        ratioSegment("menunggu", statusCounts.menunggu, total) +
+        ratioSegment("dibatalkan", statusCounts.dibatalkan, total) +
+        '</div><ul class="ratio-legend"><li><span class="ratio-dot ratio-accepted"></span>Diterima <strong>' + statusCounts.diterima + '</strong></li><li><span class="ratio-dot ratio-waiting"></span>Menunggu <strong>' + statusCounts.menunggu + '</strong></li><li><span class="ratio-dot ratio-cancelled"></span>Dibatalkan <strong>' + statusCounts.dibatalkan + '</strong></li></ul>'
+      : '<div class="empty-panel">Belum ada booking dalam 7 hari terakhir.</div>';
+    var recent = bookings.slice(0, 5);
+    document.getElementById("recent-bookings").innerHTML = recent.length
+      ? recent.map(function (item) { return bookingCard(item, false); }).join("")
+      : '<div class="empty-panel">Belum ada booking terbaru.</div>';
+  }
+
+  function renderCustomers(bookings) {
+    var list = document.getElementById("customer-list");
+    list.innerHTML = bookings.length
+      ? bookings.map(function (item) {
+          var message = "Halo " + item.nama + ", saya dari " + session.nama + " terkait booking " + item.kode + ".";
+          var wa = "https://wa.me/" + ui.phoneToWhatsApp(item.telepon) + "?text=" + encodeURIComponent(message);
+          return '<article class="customer-row"><div class="booking-customer"><strong>' + ui.escapeHtml(item.nama) + '</strong><span>' + ui.escapeHtml(item.telepon) + ' · ' + ui.escapeHtml(item.kode) + '</span></div><div class="booking-detail"><strong>' + ui.escapeHtml(item.layananNama) + ' · ' + item.jumlahOrang + ' orang</strong><span>' + ui.escapeHtml(ui.formatTanggal(item.tanggal, { day: "numeric", month: "short", year: "numeric" })) + ' · ' + item.jamMulai + '–' + item.jamSelesai + '</span></div><span class="status-badge status-' + item.status + '">' + statusLabel(item.status) + '</span><a class="button button-secondary button-small" href="' + wa + '" target="_blank" rel="noopener noreferrer">Hubungi via WhatsApp</a></article>';
+        }).join("")
+      : '<div class="empty-panel">Belum ada pelanggan yang memesan.</div>';
+  }
+
+  function bookingCard(item, includeActions) {
+    var message = "Halo " + item.nama + ", saya dari " + session.nama + " terkait booking " + item.kode + ".";
+    var wa = "https://wa.me/" + ui.phoneToWhatsApp(item.telepon) + "?text=" + encodeURIComponent(message);
+    var dateLabel = ui.formatTanggal(item.tanggal, { day: "numeric", month: "short" });
+    var actions = includeActions
+      ? '<div class="booking-actions">' +
+        (item.status === "menunggu" ? '<button class="button button-primary" type="button" data-booking-action="diterima" data-id="' + ui.escapeHtml(item.id) + '">Terima</button>' : "") +
+        (item.status !== "dibatalkan" ? '<button class="button button-secondary" type="button" data-booking-action="dibatalkan" data-id="' + ui.escapeHtml(item.id) + '">Batalkan</button>' : "") +
+        '<a class="button button-secondary" href="' + wa + '" target="_blank" rel="noopener noreferrer">WhatsApp</a></div>'
+      : "";
+    return '<article class="booking-row' + (includeActions ? "" : " booking-row-compact") + '"><div class="booking-customer"><strong>' + ui.escapeHtml(item.nama) + '</strong><span>' + ui.escapeHtml(item.telepon) + ' · ' + item.jumlahOrang + ' orang · ' + ui.escapeHtml(item.kode) + '</span></div><div class="booking-detail"><strong>' + ui.escapeHtml(item.layananNama) + '</strong><span>' + item.jamMulai + '–' + item.jamSelesai + ' · ' + ui.escapeHtml(dateLabel) + '</span></div><span class="status-badge status-' + item.status + '">' + statusLabel(item.status) + '</span>' + actions + '</article>';
+  }
+
+  function statusLabel(status) {
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  }
+
+  function countStatus(bookings, status) {
+    return bookings.filter(function (item) { return item.status === status; }).length;
+  }
+
+  function ratioSegment(status, count, total) {
+    return '<span class="ratio-segment ratio-' + (status === "diterima" ? "accepted" : status === "menunggu" ? "waiting" : "cancelled") + '" style="width:' + count / total * 100 + '%"></span>';
+  }
+
+  function compareBookingDate(first, second) {
+    return first.tanggal.localeCompare(second.tanggal) ||
+      first.jamMulai.localeCompare(second.jamMulai);
+  }
+
+  function addDays(date, amount) {
+    var value = new Date(date + "T12:00:00+07:00");
+    value.setUTCDate(value.getUTCDate() + amount);
+    return value.toISOString().slice(0, 10);
+  }
+
+  function scheduleRealtimeRefresh() {
+    window.clearTimeout(refreshTimer);
+    refreshTimer = window.setTimeout(function () {
+      refreshAll().catch(function (error) {
+        showError(error.message || "Pembaruan data langsung gagal.");
+      });
+    }, 180);
+  }
+
+  function handleRealtimeStatus(status, error) {
+    var indicator = document.getElementById("realtime-status");
+    if (status === "SUBSCRIBED") {
+      indicator.textContent = "Pembaruan langsung aktif";
+      indicator.classList.add("is-connected");
+      indicator.classList.remove("is-disconnected");
+    } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+      indicator.textContent = "Pembaruan langsung terputus";
+      indicator.classList.remove("is-connected");
+      indicator.classList.add("is-disconnected");
+      showError((error && error.message) || "Realtime Supabase tidak dapat tersambung. Pastikan migrasi dashboard-realtime.sql sudah dijalankan.");
+    } else if (status === "CLOSED") {
+      indicator.textContent = "Pembaruan langsung tidak aktif";
+      indicator.classList.remove("is-connected");
+    }
   }
 
   async function handleBookingAction(event) {
@@ -353,7 +470,7 @@
     }
     try {
       await api.simpanJadwalMingguan(session.id, schedule);
-      await Promise.all([renderWeeklyHours(), renderSchedule(), renderStats()]);
+      await refreshAll();
     } catch (error) {
       errorBox.textContent = error.message || "Jadwal tidak dapat disimpan.";
       errorBox.hidden = false;
@@ -380,7 +497,7 @@
           button.dataset.start,
           button.dataset.end,
         );
-      await Promise.all([renderSchedule(), renderStats()]);
+      await refreshAll();
     } catch (error) {
       showError(error.message);
       button.disabled = false;
@@ -429,7 +546,7 @@
     if (!window.confirm('Hapus layanan "' + service.nama + '"?')) return;
     try {
       await api.hapusLayanan(service.id);
-      await renderServices();
+      await refreshAll();
     } catch (error) {
       showError(error.message);
     }
@@ -468,7 +585,7 @@
       if (id) await api.ubahLayanan(id, input);
       else await api.tambahLayanan(session.id, input);
       closeServiceDialog();
-      await renderServices();
+      await refreshAll();
     } catch (error) {
       var errorBox = document.getElementById("service-form-error");
       errorBox.textContent = error.message;
@@ -482,13 +599,17 @@
     element.hidden = false;
   }
 
-  function formatInputDate(date) {
-    return (
-      date.getFullYear() +
-      "-" +
-      String(date.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(date.getDate()).padStart(2, "0")
-    );
+  function getJakartaDate() {
+    var parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Jakarta",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).formatToParts(new Date());
+    var values = {};
+    parts.forEach(function (part) {
+      if (part.type !== "literal") values[part.type] = part.value;
+    });
+    return values.year + "-" + values.month + "-" + values.day;
   }
 })();
