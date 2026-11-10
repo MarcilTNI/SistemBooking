@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Pesan layanan usaha lokal dengan mudah melalui BookingYukk!."
+      content="Temukan mitra usaha lokal, bandingkan layanan dan harga, lalu pesan jadwal dengan mudah di BookingYukk!."
     />
-    <title>BookingYukk! — Booking usaha lokal</title>
+    <title>BookingYukk! — Temukan layanan lokal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,108 +15,196 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/landing.css" />
   </head>
-
   <body>
-    <header class="site-header">
+    <header class="site-header landing-header">
       <div class="container header-inner">
-        <a class="brand" href="index.html" aria-label="BookingYukk!, beranda"
-          ><span class="brand-mark" aria-hidden="true">N</span
-          ><span data-product-name>BookingYukk!</span></a
-        >
-        <a class="button button-secondary button-small" href="mitra/login.html"
-          >Masuk sebagai mitra</a
-        >
+        <a class="brand" href="#beranda" aria-label="BookingYukk!, beranda">
+          <span class="brand-mark" aria-hidden="true">B</span>
+          <span data-product-name>BookingYukk!</span>
+        </a>
+        <nav class="landing-nav" aria-label="Navigasi utama">
+          <a href="#cara-pesan">Cara pesan</a>
+          <a href="#cari-mitra">Cari mitra</a>
+          <a href="#testimoni">Cerita pelanggan</a>
+        </nav>
+        <a class="button button-secondary button-small" href="mitra/login.html">
+          Masuk mitra
+        </a>
       </div>
     </header>
-    <main class="container landing-main">
-      <section class="hero">
-        <p class="eyebrow">Booking lebih praktis</p>
-        <h1>Temukan waktu yang pas untuk layanan lokal pilihanmu.</h1>
-        <p class="hero-copy">
-          Pilih layanan, lihat jadwal yang tersedia, dan buat janji langsung
-          tanpa perlu membuat akun.
-        </p>
-        <a class="button button-primary" href="#mitra">Jelajahi usaha</a>
-      </section>
-      <section class="benefits" aria-label="Manfaat BookingYukk!">
-        <article class="benefit-card">
-          <span class="benefit-number">01</span>
-          <h2>Jadwal jelas</h2>
-          <p>Pelanggan dapat melihat waktu yang tersedia sebelum memesan.</p>
-        </article>
-        <article class="benefit-card">
-          <span class="benefit-number">02</span>
-          <h2>Pesan tanpa akun</h2>
-          <p>Alur pemesanan singkat, cukup isi nama dan nomor WhatsApp.</p>
-        </article>
-        <article class="benefit-card">
-          <span class="benefit-number">03</span>
-          <h2>Kelola dari satu tempat</h2>
-          <p>Mitra dapat mengatur booking, layanan, dan jam operasional.</p>
-        </article>
-      </section>
-      <section class="partners-section" id="mitra">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Usaha terdaftar</p>
-            <h2>Mitra</h2>
+
+    <main>
+      <section class="landing-hero" id="beranda">
+        <div class="container hero-layout">
+          <div class="hero-copy-block">
+            <p class="eyebrow">Booking layanan lokal, lebih mudah</p>
+            <h1>Waktu luangmu, layanan pilihanmu.</h1>
+            <p class="hero-copy">
+              Temukan usaha di sekitarmu, bandingkan layanan dan harga, lalu
+              pilih jadwal yang cocok tanpa perlu membuat akun.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#cari-mitra">Cari layanan</a>
+              <a class="text-link hero-secondary-link" href="#cara-pesan">Pelajari cara pesan</a>
+            </div>
+            <p class="hero-assurance">Jadwal jelas · Pilih layanan sendiri · Konfirmasi langsung ke mitra</p>
           </div>
-          <p>Pilih usaha untuk melihat halaman booking-nya.</p>
-        </div>
-        <div class="partner-grid" id="partner-list" aria-live="polite">
-          <p class="muted">Memuat mitra…</p>
+          <aside class="hero-summary" aria-label="Cara kerja singkat BookingYukk!">
+            <p class="hero-summary-label">Mulai booking dalam 3 langkah</p>
+            <ol>
+              <li><span>1</span><div><strong>Pilih usaha</strong><small>Temukan mitra dan layanan yang kamu butuhkan.</small></div></li>
+              <li><span>2</span><div><strong>Tentukan jadwal</strong><small>Lihat pilihan waktu yang tersedia.</small></div></li>
+              <li><span>3</span><div><strong>Kirim permintaan</strong><small>Isi kontakmu, lalu tunggu konfirmasi mitra.</small></div></li>
+            </ol>
+          </aside>
         </div>
       </section>
-      <p class="demo-note">
-        Informasi mitra dan booking kini menggunakan database bersama.
-      </p>
+
+      <section class="how-section section-space" id="cara-pesan" aria-labelledby="how-heading">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Mudah dan transparan</p>
+              <h2 id="how-heading">Cara memesan layanan</h2>
+            </div>
+            <p>Ikuti langkah sederhana ini untuk mengirim booking kepada usaha pilihanmu.</p>
+          </div>
+          <ol class="how-steps">
+            <li class="how-card">
+              <span class="step-index">01</span>
+              <h3>Pilih mitra</h3>
+              <p>Gunakan pencarian dan filter untuk menemukan usaha, layanan, harga, serta jam operasional yang sesuai.</p>
+            </li>
+            <li class="how-card">
+              <span class="step-index">02</span>
+              <h3>Pilih layanan dan waktu</h3>
+              <p>Buka halaman booking mitra, tentukan layanan, tanggal, jumlah orang jika perlu, dan slot yang tersedia.</p>
+            </li>
+            <li class="how-card">
+              <span class="step-index">03</span>
+              <h3>Kirim permintaan</h3>
+              <p>Isi nama dan nomor WhatsApp. Kamu akan menerima kode booking untuk memudahkan komunikasi.</p>
+            </li>
+            <li class="how-card">
+              <span class="step-index">04</span>
+              <h3>Tunggu konfirmasi</h3>
+              <p>Mitra akan meninjau permintaanmu. Hubungi mitra melalui WhatsApp jika perlu memastikan detail booking.</p>
+            </li>
+          </ol>
+          <p class="booking-note">BookingYukk! membantu mengatur permintaan jadwal; pembayaran dan layanan dikonfirmasi langsung dengan mitra.</p>
+        </div>
+      </section>
+
+      <section class="directory-section section-space" id="cari-mitra" aria-labelledby="directory-heading">
+        <div class="container">
+          <div class="section-heading directory-heading">
+            <div>
+              <p class="eyebrow">Jelajahi usaha terdaftar</p>
+              <h2 id="directory-heading">Cari mitra dan layanan</h2>
+            </div>
+            <p>Bandingkan informasi usaha, layanan termurah, dan jam operasional sebelum memilih.</p>
+          </div>
+
+          <form class="directory-filters" id="directory-filter-form">
+            <div class="filter-field filter-search">
+              <label for="partner-search">Nama usaha, kategori, atau layanan</label>
+              <input id="partner-search" type="search" placeholder="Contoh: barbershop, potong rambut" autocomplete="off" />
+            </div>
+            <fieldset class="filter-field filter-price">
+              <legend>Rentang harga layanan (Rp)</legend>
+              <div class="filter-range-inputs">
+                <label for="minimum-price">Minimum<input id="minimum-price" type="number" min="0" step="5000" inputmode="numeric" placeholder="Tanpa batas" /></label>
+                <span aria-hidden="true">sampai</span>
+                <label for="maximum-price">Maksimum<input id="maximum-price" type="number" min="0" step="5000" inputmode="numeric" placeholder="Tanpa batas" /></label>
+              </div>
+            </fieldset>
+            <fieldset class="filter-field filter-hours">
+              <legend>Jam operasional</legend>
+              <div class="filter-range-inputs">
+                <label for="latest-opening">Buka paling lambat<input id="latest-opening" type="time" /></label>
+                <span aria-hidden="true">dan</span>
+                <label for="earliest-closing">Tutup paling cepat<input id="earliest-closing" type="time" /></label>
+              </div>
+            </fieldset>
+            <div class="filter-actions">
+              <p id="filter-error" class="field-error" role="alert" hidden></p>
+              <button class="button button-secondary button-small" id="reset-filters" type="reset">Hapus filter</button>
+            </div>
+          </form>
+
+          <div class="directory-results-heading">
+            <p id="partner-result-count" role="status" aria-live="polite">Memuat daftar mitra…</p>
+            <p class="directory-live-note">Informasi harga dan jadwal mengikuti data mitra.</p>
+          </div>
+          <div class="partner-grid" id="partner-list" aria-live="polite" aria-busy="true">
+            <p class="muted">Memuat mitra…</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="testimonials-section section-space" id="testimoni" aria-labelledby="testimonial-heading">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Pengalaman yang diharapkan</p>
+              <h2 id="testimonial-heading">Booking jadi lebih terencana</h2>
+            </div>
+            <p>Contoh berikut menggambarkan manfaat alur booking. Ini bukan ulasan pelanggan sungguhan.</p>
+          </div>
+          <div class="testimonial-grid">
+            <article class="testimonial-card">
+              <span class="testimonial-label">Ilustrasi pelanggan</span>
+              <blockquote>“Saya bisa cek jadwal dan harga lebih dulu, jadi lebih mudah menentukan waktu yang cocok.”</blockquote>
+              <p><strong>Calon pelanggan</strong><span>Contoh pengalaman penggunaan</span></p>
+            </article>
+            <article class="testimonial-card">
+              <span class="testimonial-label">Ilustrasi pelanggan</span>
+              <blockquote>“Kode booking membantu saya menyampaikan detail pesanan saat menghubungi mitra.”</blockquote>
+              <p><strong>Pelanggan layanan lokal</strong><span>Contoh pengalaman penggunaan</span></p>
+            </article>
+            <article class="testimonial-card">
+              <span class="testimonial-label">Ilustrasi mitra</span>
+              <blockquote>“Permintaan pelanggan dan jadwal usaha dapat dilihat dalam satu alur yang lebih rapi.”</blockquote>
+              <p><strong>Pemilik usaha lokal</strong><span>Contoh pengalaman penggunaan</span></p>
+            </article>
+          </div>
+        </div>
+      </section>
     </main>
-    <footer class="site-footer">
-      <div class="container">
-        © <span id="current-year"></span>
-        <span data-product-name>BookingYukk!</span> · Prototipe booking usaha
-        lokal · <a href="admin/index.html">Kelola platform</a>
+
+    <footer class="site-footer landing-footer">
+      <div class="container footer-main">
+        <div class="footer-brand">
+          <a class="brand" href="#beranda">
+            <span class="brand-mark" aria-hidden="true">B</span>
+            <span data-product-name>BookingYukk!</span>
+          </a>
+          <p>Temukan layanan lokal dan atur waktu booking dengan lebih praktis.</p>
+        </div>
+        <div class="footer-links">
+          <strong>Jelajahi</strong>
+          <a href="#cara-pesan">Cara pesan</a>
+          <a href="#cari-mitra">Cari mitra</a>
+          <a href="#testimoni">Cerita pelanggan</a>
+        </div>
+        <div class="footer-links">
+          <strong>Untuk mitra</strong>
+          <a href="mitra/login.html">Masuk dashboard mitra</a>
+          <a href="admin/index.html">Kelola platform</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span id="current-year"></span> <span data-product-name>BookingYukk!</span></span>
+        <span>Prototipe booking usaha lokal. Layanan dan pembayaran dikonfirmasi langsung dengan mitra.</span>
       </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
     <script src="js/supabase-client.js"></script>
     <script src="js/api.js"></script>
     <script src="js/utils.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", async function () {
-        NamaProdukUI.applyProductName();
-        document.getElementById("current-year").textContent =
-          new Date().getFullYear();
-        var list = document.getElementById("partner-list");
-        try {
-          var mitra = await NamaProdukAPI.listMitra();
-          if (!mitra.length) {
-            list.innerHTML =
-              '<div class="empty-panel">Belum ada mitra yang terdaftar.</div>';
-            return;
-          }
-          list.innerHTML = mitra
-            .map(function (item) {
-              return (
-                '<article class="partner-card"><div><span class="tag">' +
-                NamaProdukUI.escapeHtml(item.kategori) +
-                "</span><h3>" +
-                NamaProdukUI.escapeHtml(item.nama) +
-                "</h3><p>" +
-                NamaProdukUI.escapeHtml(item.alamat) +
-                '</p></div><a class="button button-primary button-small" href="booking.html?mitra=' +
-                encodeURIComponent(item.slug) +
-                '">Lihat halaman booking</a></article>'
-              );
-            })
-            .join("");
-        } catch (error) {
-          list.innerHTML =
-            '<p class="notice notice-error">Daftar mitra belum dapat dimuat. Silakan muat ulang halaman.</p>';
-          console.error("Gagal memuat daftar mitra:", error);
-        }
-      });
-    </script>
+    <script src="js/landing.js"></script>
   </body>
 </html>

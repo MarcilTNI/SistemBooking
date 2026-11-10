@@ -96,6 +96,25 @@
       return throwIfError(result);
     },
 
+    async listMitraDirektori() {
+      var mitra = await api.listMitra();
+      return Promise.all(mitra.map(async function (item) {
+        var details = await Promise.all([
+          api.listLayanan(item.id),
+          api.getJadwalMingguan(item.id),
+        ]);
+        return {
+          id: item.id,
+          slug: item.slug,
+          nama: item.nama,
+          kategori: item.kategori,
+          alamat: item.alamat,
+          layanan: details[0],
+          jadwal: details[1],
+        };
+      }));
+    },
+
     async getMitraBySlug(slug) {
       var result = await client()
         .from("mitra")

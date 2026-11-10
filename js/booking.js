@@ -38,6 +38,8 @@
       document.getElementById("booking-content").hidden = false;
       renderServices();
       renderDates();
+      updateCustomerForm();
+      document.getElementById("mobile-receipt-bar").hidden = false;
       if (!layanan.length) {
         showError("Mitra ini belum menyediakan layanan untuk dipesan.");
       }
@@ -91,11 +93,13 @@
     var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
     var list = document.getElementById("business-hours-value");
     list.innerHTML = weeklySchedule.map(function (item) {
-      var text = item.buka
-        ? days[item.hari] + ": " + item.jamMulai + "–" + item.jamSelesai +
-          (item.istirahatMulai ? " (istirahat " + item.istirahatMulai + "–" + item.istirahatSelesai + ")" : "")
-        : days[item.hari] + ": tutup";
-      return "<li>" + ui.escapeHtml(text) + "</li>";
+      return '<article class="business-hours-card' + (item.buka ? "" : " is-closed") + '"><strong>' +
+        days[item.hari] + '</strong><span>' +
+        (item.buka ? ui.escapeHtml(item.jamMulai + "–" + item.jamSelesai) : "Tutup") +
+        (item.buka && item.istirahatMulai
+          ? '<small>Istirahat ' + ui.escapeHtml(item.istirahatMulai + "–" + item.istirahatSelesai) + "</small>"
+          : "") +
+        "</span></article>";
     }).join("");
   }
 
@@ -171,7 +175,6 @@
       option.classList.toggle("is-selected", option === button);
     });
     updateCustomerForm();
-    document.getElementById("customer-step").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   document.getElementById("party-size").addEventListener("input", function () {
@@ -187,21 +190,90 @@
     updateCustomerForm();
   });
 
+  document.getElementById("customer-name").addEventListener("input", function () {
+    document.getElementById("form-error").hidden = true;
+    updateCustomerForm();
+  });
+  document.getElementById("customer-phone").addEventListener("input", function () {
+    document.getElementById("form-error").hidden = true;
+    updateCustomerForm();
+  });
+  document.getElementById("receipt-guide").addEventListener("click", function () {
+    var target = getNextBookingTarget();
+    target.element.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (target.focus) target.element.focus({ preventScroll: true });
+  });
+  document.getElementById("mobile-receipt-button").addEventListener("click", function () {
+    document.getElementById("customer-step").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
   document.getElementById("party-size").addEventListener("change", function (event) {
     if (!event.target.checkValidity()) event.target.reportValidity();
   });
 
   function updateCustomerForm() {
-    var step = document.getElementById("customer-step");
-    var ready = Boolean(selectedService && selectedDate && selectedSlot);
-    step.hidden = !ready;
-    if (!ready) return;
     var partySize = Number(document.getElementById("party-size").value);
-    var end = selectedService.durasi * partySize;
-    var timeParts = selectedSlot.jamMulai.split(":").map(Number);
-    var endMinutes = timeParts[0] * 60 + timeParts[1] + end;
-    var endTime = String(Math.floor(endMinutes / 60)).padStart(2, "0") + ":" + String(endMinutes % 60).padStart(2, "0");
-    document.getElementById("booking-summary").innerHTML = '<h3>Ringkasan booking</h3><div class="summary-row"><span>Usaha</span><strong>' + ui.escapeHtml(mitra.nama) + '</strong></div><div class="summary-row"><span>Layanan per orang</span><strong>' + ui.escapeHtml(selectedService.nama) + '</strong></div><div class="summary-row"><span>Jumlah orang</span><strong>' + partySize + ' orang</strong></div><div class="summary-row"><span>Tanggal</span><strong>' + ui.escapeHtml(ui.formatTanggal(selectedDate)) + '</strong></div><div class="summary-row"><span>Waktu berurutan</span><strong>' + selectedSlot.jamMulai + "–" + endTime + '</strong></div><div class="summary-row"><span>Total estimasi</span><strong>' + ui.formatRupiah(selectedService.harga * partySize) + "</strong></div>";
+    var validPartySize = Number.isInteger(partySize) && partySize >= 1 && partySize <= 12;
+    var endTime = "—";
+    if (selectedService && selectedSlot && validPartySize) {
+      var duration = selectedService.durasi * partySize;
+      var timeParts = selectedSlot.jamMulai.split(":").map(Number);
+      var endMinutes = timeParts[0] * 60 + timeParts[1] + duration;
+      endTime = String(Math.floor(endMinutes / 60)).padStart(2, "0") + ":" + String(endMinutes % 60).padStart(2, "0");
+    }
+    var dateSummary = selectedDate
+      ? ui.formatTanggal(selectedDate)
+      : "Pilih tanggal";
+    var name = document.getElementById("customer-name").value.trim();
+    var phone = document.getElementById("customer-phone").value.trim();
+    var complete = Boolean(
+      selectedService &&
+      selectedDate &&
+      selectedSlot &&
+      validPartySize &&
+      name.length >= 2 &&
+      ui.isValidIndonesianPhone(phone),
+    );
+    document.getElementById("booking-summary").innerHTML =
+      '<h3>Struk booking</h3>' +
+      '<div class="summary-row"><span>Usaha</span><strong>' + ui.escapeHtml(mitra.nama) + '</strong></div>' +
+      '<div class="summary-row"><span>Layanan</span><strong>' + (selectedService ? ui.escapeHtml(selectedService.nama) : "Pilih layanan") + '</strong></div>' +
+      '<div class="summary-row"><span>Durasi</span><strong>' + (selectedService ? selectedService.durasi + " menit per orang" : "—") + '</strong></div>' +
+      '<div class="summary-row"><span>Jumlah orang</span><strong>' + (validPartySize ? partySize + " orang" : "Periksa jumlah") + '</strong></div>' +
+      '<div class="summary-row"><span>Tanggal</span><strong>' + ui.escapeHtml(dateSummary) + '</strong></div>' +
+      '<div class="summary-row"><span>Waktu</span><strong>' + (selectedSlot ? selectedSlot.jamMulai + "–" + endTime : "Pilih slot") + '</strong></div>' +
+      '<div class="receipt-total"><span>Total estimasi</span><strong>' + (selectedService && validPartySize ? ui.formatRupiah(selectedService.harga * partySize) : "—") + '</strong></div>';
+    var guideButton = document.getElementById("receipt-guide");
+    var confirmButton = document.getElementById("confirm-booking");
+    guideButton.hidden = complete;
+    confirmButton.hidden = !complete;
+    confirmButton.textContent = "Booking sekarang";
+    document.getElementById("mobile-receipt-label").textContent = complete
+      ? "Pilihan lengkap · " + ui.formatRupiah(selectedService.harga * partySize)
+      : "Lanjutkan pemesanan";
+    if (!complete) guideButton.textContent = getNextBookingTarget().label;
+  }
+
+  function getNextBookingTarget() {
+    var partySize = Number(document.getElementById("party-size").value);
+    if (!selectedService) {
+      return { element: document.getElementById("service-section"), label: "Pilih layanan" };
+    }
+    if (!Number.isInteger(partySize) || partySize < 1 || partySize > 12) {
+      return { element: document.getElementById("party-size"), label: "Periksa jumlah orang", focus: true };
+    }
+    if (!selectedSlot) {
+      return { element: document.getElementById("schedule-section"), label: "Pilih tanggal dan waktu" };
+    }
+    var name = document.getElementById("customer-name").value.trim();
+    if (name.length < 2) {
+      return { element: document.getElementById("customer-name"), label: "Isi nama pemesan", focus: true };
+    }
+    var phone = document.getElementById("customer-phone").value.trim();
+    if (!ui.isValidIndonesianPhone(phone)) {
+      return { element: document.getElementById("customer-phone"), label: "Isi nomor WhatsApp", focus: true };
+    }
+    return { element: document.getElementById("customer-step"), label: "Booking sekarang" };
   }
 
   document.getElementById("customer-form").addEventListener("submit", async function (event) {
@@ -217,6 +289,9 @@
       return setFormError("Jumlah orang harus antara 1 sampai 12.");
     }
     var button = document.getElementById("confirm-booking");
+    if (!selectedService || !selectedDate || !selectedSlot) {
+      return setFormError("Pilih layanan, tanggal, dan slot waktu terlebih dahulu.");
+    }
     var service = selectedService;
     var date = selectedDate;
     var startTime = selectedSlot.jamMulai;
@@ -228,7 +303,10 @@
       // API memeriksa kembali ketersediaan slot tepat sebelum data disimpan.
       var partySize = partySizeValue;
       var booking = await api.buatBooking({ mitraId: mitra.id, layananId: service.id, tanggal: date, jamMulai: startTime, nama: name, telepon: ui.phoneToWhatsApp(phone), jumlahOrang: partySize });
-      document.getElementById("booking-content").querySelectorAll(".booking-step").forEach(function (step) { step.hidden = true; });
+      document.getElementById("booking-layout").hidden = true;
+      document.getElementById("business-header").hidden = true;
+      document.getElementById("booking-error").hidden = true;
+      document.getElementById("mobile-receipt-bar").hidden = true;
       document.getElementById("success-code").textContent = booking.kode;
       var message = "Halo " + mitra.nama + ", saya " + name + " membuat booking " + service.nama + " untuk " + partySize + " orang secara berurutan pada " + ui.formatTanggal(date) + " pukul " + booking.jamMulai + "–" + booking.jamSelesai + ". Kode booking: " + booking.kode + ".";
       updateWhatsAppLinks(message);
@@ -236,11 +314,13 @@
       document.getElementById("booking-success").scrollIntoView({ behavior: "smooth", block: "center" });
     } catch (error) {
       setFormError(error.message || "Booking belum dapat disimpan. Silakan coba lagi.");
+      selectedSlot = null;
+      updateCustomerForm();
       await renderSlots();
     } finally {
       isSubmitting = false;
       button.disabled = false;
-      button.textContent = "Konfirmasi booking";
+      button.textContent = "Booking sekarang";
     }
   });
 

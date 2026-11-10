@@ -28,6 +28,7 @@ Urutan ini mengasumsikan tabel dasar sudah dibuat dari setup sebelumnya.
 - Nomor WhatsApp usaha di formulir admin dipakai pelanggan untuk menghubungi mitra setelah booking. Nomor mitra yang sudah terdaftar juga dapat diperbarui dari daftar usaha.
 - `/booking.html?mitra=slug` — link yang dibagikan langsung membuka satu usaha, bukan direktori usaha lain.
 - Pelanggan dapat memilih hari ini atau 13 hari berikutnya; slot hari ini yang waktu mulainya sudah lewat tidak dapat dipesan.
+- Halaman booking menampilkan jam mingguan dalam kartu, form pelanggan, serta struk estimasi yang diperbarui saat pilihan berubah. Pada layar kecil, tombol bawah mengarahkan ke struk.
 - `/mitra/login.html` — pemilik masuk dengan akun Supabase Auth yang terhubung ke mitranya.
 - Dashboard mitra memiliki tab Dashboard, Manajemen Booking, Jadwal Harian, Pelanggan, dan Layanan & harga. Ringkasan, tren/status booking, daftar pelanggan, jadwal, dan layanan diperbarui melalui Supabase Realtime.
 - Estimasi pendapatan hari ini hanya menghitung booking berstatus diterima, berdasarkan harga layanan saat ini dikalikan jumlah orang. Nilainya adalah perkiraan, bukan laporan pembayaran; perubahan harga layanan dapat memengaruhi estimasi.
@@ -38,7 +39,7 @@ Urutan ini mengasumsikan tabel dasar sudah dibuat dari setup sebelumnya.
 
 ## Struktur file
 
-- `index.html` — landing page, daftar usaha dari Supabase.
+- `index.html` — beranda pelanggan dengan panduan booking, pencarian/filter mitra, contoh testimoni berlabel ilustrasi, dan footer.
 - `booking.html` — pemilihan layanan, tanggal, slot, dan pemesanan.
 - `mitra/login.html` — login menggunakan Supabase Auth.
 - `mitra/dashboard.html` — booking, jadwal, serta pengelolaan layanan.
@@ -47,7 +48,8 @@ Urutan ini mengasumsikan tabel dasar sudah dibuat dari setup sebelumnya.
 - `js/supabase-client.js` — inisialisasi Supabase client dengan URL dan Publishable key.
 - `js/api.js` — lapisan akses data tunggal untuk seluruh halaman.
 - `js/utils.js` — format tampilan dan utilitas UI.
-- `js/booking.js`, `js/login.js`, `js/dashboard.js` — interaksi tiap halaman.
+- `js/booking.js`, `js/login.js`, `js/dashboard.js`, `js/landing.js` — interaksi tiap halaman.
+- `css/landing.css` — tata letak, navigasi, direktori mitra, dan bagian khusus beranda.
 - `js/admin.js` — pendaftaran mitra platform.
 - `supabase/booking-access.sql`, `supabase/tenant-scheduling.sql`, `supabase/platform-contact.sql`, `supabase/dashboard-realtime.sql` — kebijakan akses, fungsi database, pengaturan kontak WhatsApp, dan Realtime dashboard.
 - `supabase/register-platform-admin.sql` — memberi peran admin kepada akun Auth platform.

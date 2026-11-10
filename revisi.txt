@@ -16,3 +16,38 @@ di page mitra aku pengen ada:
 
 
 oke sekarang revisi di bagian login mitra, aku pengen di tambahin sesuatu detail gitu, biar ngga plat form login saja, kaya misal form login di sebelah kiri, di sebelah kanannya ada apa gitu, jujur aku belom kepikiran sih. fokus di perbaikan halaman login mitra dulu, yang lainnya menyusul setelah ini selesai
+
+
+oke sekarang bagian beranda dulu nih, beranda tuh yang index.html kan yah, nah di page sekarang kan cuman kaya gini doang kan: Booking lebih praktis
+
+Temukan waktu yang pas untuk layanan lokal pilihanmu.
+Pilih layanan, lihat jadwal yang tersedia, dan buat janji langsung tanpa perlu membuat akun.
+
+Jelajahi usaha
+01
+Jadwal jelas
+Pelanggan dapat melihat waktu yang tersedia sebelum memesan.
+
+02
+Pesan tanpa akun
+Alur pemesanan singkat, cukup isi nama dan nomor WhatsApp.
+
+03
+Kelola dari satu tempat
+Mitra dapat mengatur booking, layanan, dan jam operasional.
+
+Usaha terdaftar
+
+Mitra
+Pilih usaha untuk melihat halaman booking-nya.
+
+Barbershop
+Barbershop Rapi
+Jl. Melati No. 12, Bandung
+
+Lihat halaman booking
+Informasi mitra dan booking kini menggunakan database bersama.
+
+© 2026 BookingYukk! · Prototipe booking usaha lokal · Kelola platform.
+
+nah aku pengen di bagian page ini benar-benar menjelaskan atau menerangkan atau memberikan gambaran kepada custumer secara lengkap seperti, ada section yang menjelaskan cara memesan, cara memilih mitra, terus ada fitur search mitra juga di atasnya, terus ada testimoni dummy, di bagian bawah ada footer. dan aku pengen semuanya di jadiin satu page aja tapi tetap ada navbar di atas yang ketika di klik akan otomatis scroll ke bagiannya. ada juga fitur cari layanan di mitra berdasarkan range harga yang ditentukan oleh user misal pake progress bar atau pakai option minimal-maximal, atau cari mitra berdasarkan jam buka-tutup. terus ada mitra-mitra yang terdaftar, lengkap dengan informasi mitranya seperti jadwal buka-tutup, harga layanan termurah, lalu ada button lihat halaman booking yang langsung ke page booking mitranya. aku pengen scroll otomatisnya itu smooth di semua page bukan hanya di page beranda doang tapi di semua fitur navbar yang ada srroll otomatisnya aku pengen smooth semuanya, supaya lebih enak di lihat dan digunakan. aku harap kamu menaruh semua komponen baru ini sesuai dengan standarisasi website pada umumnya, aku pengen UI/UX yang jelas dan mudah digunakan.
