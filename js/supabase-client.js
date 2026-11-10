@@ -1,4 +1,4 @@
-(function (global) {
+((global) => {
   "use strict";
 
   if (!global.supabase || typeof global.supabase.createClient !== "function") {

@@ -1,11 +1,11 @@
-(function () {
+(() => {
   "use strict";
-  var ui = window.NamaProdukUI;
-  var partners = [];
+  const ui = window.NamaProdukUI;
+  let partners = [];
   // Ganti jalur ini saat file logo platform sudah ditambahkan ke proyek.
-  var PLATFORM_LOGO_PATH = "images/logo.png";
-  var dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  var shortDayNames = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+  const PLATFORM_LOGO_PATH = "images/logo.png";
+  const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const shortDayNames = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 
   document.addEventListener("DOMContentLoaded", initialize);
 
@@ -14,7 +14,7 @@
     initializePlatformLogos();
     document.getElementById("current-year").textContent = new Date().getFullYear();
     bindFilters();
-    var list = document.getElementById("partner-list");
+    const list = document.getElementById("partner-list");
     try {
       partners = await window.NamaProdukAPI.listMitraDirektori();
       list.setAttribute("aria-busy", "false");
@@ -30,12 +30,12 @@
   }
 
   function initializePlatformLogos() {
-    document.querySelectorAll("[data-platform-logo]").forEach(function (logo) {
-      logo.addEventListener("load", function () {
+    document.querySelectorAll("[data-platform-logo]").forEach((logo) => {
+      logo.addEventListener("load", () => {
         logo.hidden = false;
         logo.closest(".brand").classList.add("has-platform-logo");
       });
-      logo.addEventListener("error", function () {
+      logo.addEventListener("error", () => {
         logo.hidden = true;
       });
       logo.src = PLATFORM_LOGO_PATH;
@@ -43,21 +43,21 @@
   }
 
   function bindFilters() {
-    var form = document.getElementById("directory-filter-form");
+    const form = document.getElementById("directory-filter-form");
     form.addEventListener("input", renderPartners);
     form.addEventListener("change", renderPartners);
-    form.addEventListener("reset", function () {
+    form.addEventListener("reset", () => {
       window.setTimeout(renderPartners, 0);
     });
   }
 
   function renderPartners() {
-    var list = document.getElementById("partner-list");
-    var error = document.getElementById("filter-error");
-    var minInput = document.getElementById("minimum-price");
-    var maxInput = document.getElementById("maximum-price");
-    var min = minInput.value === "" ? null : Number(minInput.value);
-    var max = maxInput.value === "" ? null : Number(maxInput.value);
+    const list = document.getElementById("partner-list");
+    const error = document.getElementById("filter-error");
+    const minInput = document.getElementById("minimum-price");
+    const maxInput = document.getElementById("maximum-price");
+    const min = minInput.value === "" ? null : Number(minInput.value);
+    const max = maxInput.value === "" ? null : Number(maxInput.value);
 
     if ((min !== null && min < 0) || (max !== null && max < 0)) {
       error.textContent = "Rentang harga tidak boleh kurang dari nol.";
@@ -71,17 +71,17 @@
     }
     error.hidden = true;
 
-    var search = document.getElementById("partner-search").value
+    const search = document.getElementById("partner-search").value
       .trim()
       .toLocaleLowerCase("id");
-    var latestOpening = document.getElementById("latest-opening").value;
-    var earliestClosing = document.getElementById("earliest-closing").value;
-    var filtered = partners.filter(function (partner) {
-      var searchable = [
+    const latestOpening = document.getElementById("latest-opening").value;
+    const earliestClosing = document.getElementById("earliest-closing").value;
+    const filtered = partners.filter((partner) => {
+      const searchable = [
         partner.nama,
         partner.kategori,
         partner.alamat,
-      ].concat(partner.layanan.map(function (service) {
+      ].concat(partner.layanan.map((service) => {
         return service.nama;
       })).join(" ").toLocaleLowerCase("id");
 
@@ -103,14 +103,14 @@
         '<div class="empty-panel directory-empty">Belum ada mitra yang sesuai. Coba ubah kata kunci atau rentang filter.</div>';
       return;
     }
-    list.innerHTML = filtered.map(function (partner) {
+    list.innerHTML = filtered.map((partner) => {
       return renderPartnerCard(partner, min, max);
     }).join("");
   }
 
   function matchesPrice(partner, min, max) {
     if (min === null && max === null) return true;
-    return partner.layanan.some(function (service) {
+    return partner.layanan.some((service) => {
       return (min === null || service.harga >= min) &&
         (max === null || service.harga <= max);
     });
@@ -118,7 +118,7 @@
 
   function matchesHours(partner, latestOpening, earliestClosing) {
     if (!latestOpening && !earliestClosing) return true;
-    return partner.jadwal.some(function (day) {
+    return partner.jadwal.some((day) => {
       if (!day.buka) return false;
       return (!latestOpening || day.jamMulai <= latestOpening) &&
         (!earliestClosing || day.jamSelesai >= earliestClosing);
@@ -126,22 +126,22 @@
   }
 
   function renderPartnerCard(partner, min, max) {
-    var matchingServices = partner.layanan.filter(function (service) {
+    const matchingServices = partner.layanan.filter((service) => {
       return (min === null || service.harga >= min) &&
         (max === null || service.harga <= max);
     });
-    var servicesForPrice = matchingServices.length ? matchingServices : partner.layanan;
-    var cheapest = servicesForPrice.reduce(function (current, service) {
+    const servicesForPrice = matchingServices.length ? matchingServices : partner.layanan;
+    const cheapest = servicesForPrice.reduce((current, service) => {
       return !current || service.harga < current.harga ? service : current;
     }, null);
-    var openDays = partner.jadwal.filter(function (day) {
+    const openDays = partner.jadwal.filter((day) => {
       return day.buka;
     });
-    var firstDay = openDays[0];
-    var scheduleSummary = firstDay
+    const firstDay = openDays[0];
+    const scheduleSummary = firstDay
       ? dayNames[firstDay.hari] + " " + firstDay.jamMulai + "–" + firstDay.jamSelesai
       : "Jadwal belum tersedia";
-    var serviceNames = partner.layanan.map(function (service) {
+    const serviceNames = partner.layanan.map((service) => {
       return service.nama;
     });
 
@@ -164,13 +164,13 @@
           '<div class="partner-detail-content">' +
             '<div><strong>Layanan tersedia</strong>' +
               (partner.layanan.length
-                ? '<ul class="partner-services">' + partner.layanan.map(function (service) {
+                ? '<ul class="partner-services">' + partner.layanan.map((service) => {
                     return '<li><span>' + ui.escapeHtml(service.nama) + '</span><span>' + service.durasi + ' menit · ' + ui.formatRupiah(service.harga) + '</span></li>';
                   }).join("") + '</ul>'
                 : '<p class="partner-no-services">Belum ada layanan yang dipublikasikan.</p>') +
             '</div>' +
             '<div><strong>Jam operasional mingguan</strong>' +
-              '<ul class="partner-schedule">' + partner.jadwal.map(function (day) {
+              '<ul class="partner-schedule">' + partner.jadwal.map((day) => {
                 return '<li><span>' + shortDayNames[day.hari] + '</span><span>' +
                   (day.buka
                     ? ui.escapeHtml(day.jamMulai + "–" + day.jamSelesai + (day.istirahatMulai ? " · Istirahat " + day.istirahatMulai + "–" + day.istirahatSelesai : ""))

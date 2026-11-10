@@ -1,12 +1,12 @@
-(function () {
+(() => {
   "use strict";
-  var api = window.NamaProdukAPI;
-  var ui = window.NamaProdukUI;
-  document.addEventListener("DOMContentLoaded", async function () {
+  const api = window.NamaProdukAPI;
+  const ui = window.NamaProdukUI;
+  document.addEventListener("DOMContentLoaded", async () => {
     ui.applyProductName();
-    var error = document.getElementById("login-error");
+    const error = document.getElementById("login-error");
     try {
-      var existing = await api.getSesiMitra();
+      const existing = await api.getSesiMitra();
       if (existing) {
         window.location.href = "dashboard.html";
         return;
@@ -19,7 +19,7 @@
     }
     document
       .getElementById("login-form")
-      .addEventListener("submit", async function (event) {
+      .addEventListener("submit", async (event) => {
         event.preventDefault();
         error.hidden = true;
         try {

@@ -1,7 +1,7 @@
-(function (global) {
+((global) => {
   "use strict";
 
-  var PRODUCT_NAME = "BookingYukk!";
+  const PRODUCT_NAME = "BookingYukk!";
 
   function client() {
     if (!global.NamaProdukSupabase) {
@@ -46,7 +46,7 @@
   }
 
   function mapBooking(row) {
-    var relatedService = Array.isArray(row.layanan) ? row.layanan[0] : row.layanan;
+    let relatedService = Array.isArray(row.layanan) ? row.layanan[0] : row.layanan;
     return {
       id: row.id,
       kode: row.kode,
@@ -67,7 +67,7 @@
   }
 
   function minutes(time) {
-    var parts = toTime(time).split(":").map(Number);
+    let parts = toTime(time).split(":").map(Number);
     return parts[0] * 60 + parts[1];
   }
 
@@ -85,11 +85,11 @@
   }
 
   // Seluruh operasi database dikelola lewat lapisan API ini.
-  var api = {
+  const api = {
     PRODUCT_NAME: PRODUCT_NAME,
 
     async listMitra() {
-      var result = await client()
+      let result = await client()
         .from("mitra")
         .select("id, slug, nama, kategori, alamat")
         .order("nama");
@@ -97,9 +97,9 @@
     },
 
     async listMitraDirektori() {
-      var mitra = await api.listMitra();
-      return Promise.all(mitra.map(async function (item) {
-        var details = await Promise.all([
+      let mitra = await api.listMitra();
+      return Promise.all(mitra.map(async (item) => {
+        let details = await Promise.all([
           api.listLayanan(item.id),
           api.getJadwalMingguan(item.id),
         ]);
@@ -116,27 +116,27 @@
     },
 
     async getMitraBySlug(slug) {
-      var result = await client()
+      let result = await client()
         .from("mitra")
         .select("id, slug, nama, kategori, alamat, jam_mulai, jam_selesai")
         .eq("slug", slug)
         .maybeSingle();
-      var profile = throwIfError(result);
+      let profile = throwIfError(result);
       if (!profile) return null;
-      var mitra = mapMitra(profile);
+      let mitra = mapMitra(profile);
       mitra.telepon = await api.getMitraPublicContact(slug);
       return mitra;
     },
 
     async getMitraPublicContact(slug) {
-      var result = await client().rpc("get_mitra_public_contact", {
+      let result = await client().rpc("get_mitra_public_contact", {
         p_slug: slug,
       });
       return throwIfError(result);
     },
 
     async listLayanan(mitraId) {
-      var result = await client()
+      let result = await client()
         .from("layanan")
         .select("id, mitra_id, nama, durasi, harga")
         .eq("mitra_id", mitraId)
@@ -145,7 +145,7 @@
     },
 
     async listBooking(mitraId, tanggal) {
-      var query = client()
+      let query = client()
         .from("booking")
         .select("id, kode, mitra_id, layanan_id, nama, telepon, tanggal, jam_mulai, jam_selesai, status, jumlah_orang, durasi_menit, dibuat_pada, layanan ( nama, durasi, harga )")
         .eq("mitra_id", mitraId)
@@ -155,9 +155,9 @@
     },
 
     subscribeDashboardRealtime(mitraId, onChange, onStatus) {
-      var channel = client().channel("mitra-dashboard-" + mitraId);
+      let channel = client().channel("mitra-dashboard-" + mitraId);
       ["booking", "penutupan_jadwal", "jadwal_mingguan", "layanan"].forEach(
-        function (table) {
+        (table) => {
           channel.on(
             "postgres_changes",
             {
@@ -179,13 +179,13 @@
     },
 
     async getSlotTersedia(mitraId, layananId, tanggal, jumlahOrang) {
-      var result = await client().rpc("get_slot_tersedia", {
+      let result = await client().rpc("get_slot_tersedia", {
         p_mitra_id: mitraId,
         p_layanan_id: layananId,
         p_tanggal: tanggal,
         p_jumlah_orang: Number(jumlahOrang) || 1,
       });
-      return throwIfError(result).map(function (slot) {
+      return throwIfError(result).map((slot) => {
         return {
           jamMulai: toTime(slot.jam_mulai),
           jamSelesai: toTime(slot.jam_selesai),
@@ -196,7 +196,7 @@
     },
 
     async buatBooking(input) {
-      var result = await client().rpc("create_booking", {
+      let result = await client().rpc("create_booking", {
         p_mitra_id: input.mitraId,
         p_layanan_id: input.layananId,
         p_tanggal: input.tanggal,
@@ -205,8 +205,8 @@
         p_telepon: input.telepon,
         p_jumlah_orang: Number(input.jumlahOrang) || 1,
       });
-      var rows = throwIfError(result);
-      var row = Array.isArray(rows) ? rows[0] : rows;
+      let rows = throwIfError(result);
+      let row = Array.isArray(rows) ? rows[0] : rows;
       if (!row) throw new Error("Booking tidak berhasil disimpan. Silakan coba lagi.");
       return {
         id: row.booking_id,
@@ -223,7 +223,7 @@
       if (["menunggu", "diterima", "dibatalkan"].indexOf(status) === -1) {
         throw new Error("Status booking tidak valid.");
       }
-      var result = await client()
+      let result = await client()
         .from("booking")
         .update({ status: status })
         .eq("id", id)
@@ -233,7 +233,7 @@
     },
 
     async tutupJam(mitraId, tanggal, jamMulai, jamSelesai) {
-      var result = await client().rpc("tutup_jam", {
+      let result = await client().rpc("tutup_jam", {
         p_mitra_id: mitraId,
         p_tanggal: tanggal,
         p_jam_mulai: jamMulai,
@@ -243,7 +243,7 @@
     },
 
     async bukaJam(mitraId, tanggal, jamMulai, jamSelesai) {
-      var result = await client().rpc("buka_jam", {
+      let result = await client().rpc("buka_jam", {
         p_mitra_id: mitraId,
         p_tanggal: tanggal,
         p_jam_mulai: jamMulai,
@@ -253,7 +253,7 @@
     },
 
     async tambahLayanan(mitraId, input) {
-      var result = await client()
+      let result = await client()
         .from("layanan")
         .insert({
           mitra_id: mitraId,
@@ -267,7 +267,7 @@
     },
 
     async ubahLayanan(id, input) {
-      var result = await client()
+      let result = await client()
         .from("layanan")
         .update({
           nama: input.nama.trim(),
@@ -281,22 +281,22 @@
     },
 
     async hapusLayanan(id) {
-      var result = await client().from("layanan").delete().eq("id", id);
+      let result = await client().from("layanan").delete().eq("id", id);
       throwIfError(result);
     },
 
     async loginMitra(email, password) {
-      var result = await client().auth.signInWithPassword({
+      let result = await client().auth.signInWithPassword({
         email: email.trim(),
         password: password,
       });
-      var authData = throwIfError(result);
-      var profileResult = await client()
+      let authData = throwIfError(result);
+      let profileResult = await client()
         .from("mitra")
         .select("id, slug, nama, kategori, alamat, telepon, jam_mulai, jam_selesai, auth_user_id")
         .eq("auth_user_id", authData.user.id)
         .maybeSingle();
-      var profile = throwIfError(profileResult);
+      let profile = throwIfError(profileResult);
       if (!profile) {
         await client().auth.signOut();
         throw new Error("Akun ini belum dihubungkan dengan data mitra.");
@@ -305,7 +305,7 @@
     },
 
     async loginAdmin(email, password) {
-      var result = await client().auth.signInWithPassword({
+      let result = await client().auth.signInWithPassword({
         email: email.trim(),
         password: password,
       });
@@ -313,67 +313,67 @@
     },
 
     async logoutMitra() {
-      var result = await client().auth.signOut();
+      let result = await client().auth.signOut();
       throwIfError(result);
     },
 
     async getSesiMitra() {
-      var authResult = await client().auth.getSession();
+      let authResult = await client().auth.getSession();
       if (authResult.error) throw new Error(authResult.error.message);
-      var authUser = authResult.data.session && authResult.data.session.user;
+      let authUser = authResult.data.session && authResult.data.session.user;
       if (!authUser) return null;
-      var profileResult = await client()
+      let profileResult = await client()
         .from("mitra")
         .select("id, slug, nama, kategori, alamat, telepon, jam_mulai, jam_selesai, auth_user_id")
         .eq("auth_user_id", authUser.id)
         .maybeSingle();
-      var profile = throwIfError(profileResult);
+      let profile = throwIfError(profileResult);
       if (!profile) return null;
       return mapMitra(profile);
     },
 
     async getSesiAdmin() {
-      var authResult = await client().auth.getSession();
+      let authResult = await client().auth.getSession();
       if (authResult.error) throw new Error(authResult.error.message);
       if (!authResult.data.session) return null;
-      var result = await client().rpc("is_platform_admin");
+      let result = await client().rpc("is_platform_admin");
       if (result.error) throw new Error(result.error.message);
       return result.data ? authResult.data.session.user : null;
     },
 
     async listMitraAdmin() {
-      var result = await client().rpc("admin_list_mitra");
+      let result = await client().rpc("admin_list_mitra");
       return throwIfError(result);
     },
 
     async getKontakWhatsAppAdmin() {
-      var result = await client().rpc("get_platform_contact_whatsapp");
+      let result = await client().rpc("get_platform_contact_whatsapp");
       return throwIfError(result);
     },
 
     async simpanKontakWhatsAppAdmin(phone) {
-      var normalizedPhone = String(phone || "").replace(/\D/g, "");
+      let normalizedPhone = String(phone || "").replace(/\D/g, "");
       if (normalizedPhone.indexOf("0") === 0) {
         normalizedPhone = "62" + normalizedPhone.slice(1);
       }
       if (!/^[0-9]{10,15}$/.test(normalizedPhone)) {
         throw new Error("Nomor WhatsApp admin harus berisi 10 sampai 15 digit.");
       }
-      var result = await client().rpc("set_platform_contact_whatsapp", {
+      let result = await client().rpc("set_platform_contact_whatsapp", {
         p_phone: normalizedPhone,
       });
       throwIfError(result);
     },
 
     async simpanNomorWhatsAppMitra(mitraId, phone) {
-      var normalizedPhone = String(phone || "").replace(/\D/g, "");
+      let normalizedPhone = String(phone || "").replace(/\D/g, "");
       if (normalizedPhone.indexOf("0") === 0) {
         normalizedPhone = "62" + normalizedPhone.slice(1);
       }
       if (!/^[0-9]{10,15}$/.test(normalizedPhone)) {
         throw new Error("Nomor WhatsApp usaha harus berisi 10 sampai 15 digit.");
       }
-      var result = await client().rpc("admin_update_mitra_whatsapp", {
+      let result = await client().rpc("admin_update_mitra_whatsapp", {
         p_mitra_id: mitraId,
         p_phone: normalizedPhone,
       });
@@ -381,7 +381,7 @@
     },
 
     async adminTambahMitra(input) {
-      var result = await client().rpc("admin_create_mitra", {
+      let result = await client().rpc("admin_create_mitra", {
         p_slug: input.slug,
         p_nama: input.nama,
         p_kategori: input.kategori,
@@ -391,16 +391,16 @@
         p_jadwal: input.jadwal,
         p_layanan: input.layanan,
       });
-      var rows = throwIfError(result);
+      let rows = throwIfError(result);
       if (!rows || !rows.length) throw new Error("Usaha belum berhasil dibuat.");
       return rows[0];
     },
 
     async getJadwalMingguan(mitraId) {
-      var result = await client().rpc("get_jadwal_operasional", {
+      let result = await client().rpc("get_jadwal_operasional", {
         p_mitra_id: mitraId,
       });
-      return throwIfError(result).map(function (row) {
+      return throwIfError(result).map((row) => {
         return {
           hari: Number(row.hari),
           buka: row.buka,
@@ -413,7 +413,7 @@
     },
 
     async simpanJadwalMingguan(mitraId, jadwal) {
-      var result = await client().rpc("save_jadwal_mingguan", {
+      let result = await client().rpc("save_jadwal_mingguan", {
         p_mitra_id: mitraId,
         p_jadwal: jadwal,
       });
@@ -421,43 +421,43 @@
     },
 
     async getRingkasan(mitraId, tanggal) {
-      var bookings = await api.listBooking(mitraId, tanggal);
-      var schedule = await api.getJadwalHarian(mitraId, tanggal);
+      let bookings = await api.listBooking(mitraId, tanggal);
+      let schedule = await api.getJadwalHarian(mitraId, tanggal);
       return {
         booking: bookings.length,
-        menunggu: bookings.filter(function (item) {
+        menunggu: bookings.filter((item) => {
           return item.status === "menunggu";
         }).length,
-        slotKosong: schedule.filter(function (slot) {
+        slotKosong: schedule.filter((slot) => {
           return slot.status === "kosong";
         }).length,
       };
     },
 
     async getJadwalHarian(mitraId, tanggal) {
-      var weekly = await api.getJadwalMingguan(mitraId);
-      var day = new Date(tanggal + "T12:00:00");
-      var weekday = day.getDay();
-      var daily = weekly.find(function (item) {
+      let weekly = await api.getJadwalMingguan(mitraId);
+      let day = new Date(tanggal + "T12:00:00");
+      let weekday = day.getDay();
+      let daily = weekly.find((item) => {
         return item.hari === weekday;
       });
       if (!daily || !daily.buka) return [];
-      var bookingResult = await client()
+      let bookingResult = await client()
         .from("booking")
         .select("kode, tanggal, jam_mulai, jam_selesai, status, jumlah_orang")
         .eq("mitra_id", mitraId)
         .eq("tanggal", tanggal)
         .neq("status", "dibatalkan");
-      var bookings = throwIfError(bookingResult);
-      var closureResult = await client()
+      let bookings = throwIfError(bookingResult);
+      let closureResult = await client()
         .from("penutupan_jadwal")
         .select("jam_mulai, jam_selesai")
         .eq("mitra_id", mitraId)
         .eq("tanggal", tanggal);
-      var closures = throwIfError(closureResult);
-      var today = dateInJakarta();
-      var now = new Date();
-      var currentMinutes = Number(
+      let closures = throwIfError(closureResult);
+      let today = dateInJakarta();
+      let now = new Date();
+      let currentMinutes = Number(
         new Intl.DateTimeFormat("en-GB", {
           timeZone: "Asia/Jakarta",
           hour: "2-digit",
@@ -468,19 +468,19 @@
           .replace(":", ""),
       );
       currentMinutes = Math.floor(currentMinutes / 100) * 60 + currentMinutes % 100;
-      var pastDate = tanggal < today;
-      var slots = [];
+      let pastDate = tanggal < today;
+      let slots = [];
 
-      for (var start = minutes(daily.jamMulai); start < minutes(daily.jamSelesai); start += 30) {
-        var end = Math.min(start + 30, minutes(daily.jamSelesai));
-        var booking = bookings.find(function (item) {
+      for (let start = minutes(daily.jamMulai); start < minutes(daily.jamSelesai); start += 30) {
+        let end = Math.min(start + 30, minutes(daily.jamSelesai));
+        let booking = bookings.find((item) => {
           return start < minutes(item.jam_selesai) && end > minutes(item.jam_mulai);
         });
-        var breakTime = daily.istirahatMulai && start < minutes(daily.istirahatSelesai) && end > minutes(daily.istirahatMulai);
-        var closed = closures.some(function (item) {
+        let breakTime = daily.istirahatMulai && start < minutes(daily.istirahatSelesai) && end > minutes(daily.istirahatMulai);
+        let closed = closures.some((item) => {
           return start < minutes(item.jam_selesai) && end > minutes(item.jam_mulai);
         });
-        var isPast = pastDate || (tanggal === today && start <= currentMinutes);
+        let isPast = pastDate || (tanggal === today && start <= currentMinutes);
         slots.push({
           jamMulai: timeFromMinutes(start),
           jamSelesai: timeFromMinutes(end),

@@ -8,6 +8,10 @@ Frontend HTML, CSS, dan JavaScript vanilla yang memakai Supabase untuk data mitr
 - Browser harus terhubung ke internet untuk memuat Supabase JS dari CDN dan mengakses proyek Supabase.
 - Hindari membuka melalui `file://`; origin Live Server lebih konsisten untuk Supabase Auth.
 
+## Gaya JavaScript
+
+Skrip aplikasi tetap memakai `<script>` klasik tanpa ES modules atau build tool. Gunakan `const` untuk binding yang tidak ditugaskan ulang, `let` untuk state yang berubah, dan arrow function untuk callback atau fungsi inline. Deklarasi fungsi bernama tetap digunakan pada helper yang perlu hoisting, sehingga dapat dipanggil sebelum lokasi definisinya.
+
 ## Penyiapan database dan akun
 
 Urutan ini mengasumsikan tabel dasar sudah dibuat dari setup sebelumnya.
