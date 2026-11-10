@@ -62,7 +62,7 @@
   flex-direction: column;
   justify-content: center;
   padding: clamp(28px, 4vw, 48px);
-  background: var(--color-accent-soft);
+  background: linear-gradient(145deg, #e4edff 0%, #eef4ff 58%, #fbfdff 100%);
 }
 
 .showcase-copy {
@@ -112,7 +112,7 @@
   height: 27px;
   flex: 0 0 27px;
   place-items: center;
-  border: 1px solid #c9ded1;
+  border: 1px solid #c6d9eb;
   border-radius: 7px;
   background: var(--color-surface);
   color: var(--color-accent);

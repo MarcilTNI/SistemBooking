@@ -9,7 +9,7 @@
   padding: 27px;
   border: 1px solid var(--color-border);
   border-radius: 12px;
-  background: var(--color-surface);
+  background: linear-gradient(125deg, #ffffff 56%, #edf4ff 100%);
   box-shadow: var(--shadow);
 }
 
@@ -39,7 +39,7 @@
 .booking-intro-badge {
   flex: 0 0 auto;
   padding: 7px 10px;
-  border: 1px solid #cfe2d5;
+  border: 1px solid #c6d9eb;
   border-radius: 99px;
   background: var(--color-accent-soft);
   color: var(--color-accent);
@@ -83,7 +83,7 @@
   padding: 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: #fbfcfb;
+  background: #f8fafd;
 }
 
 .business-hours-card strong {
@@ -103,7 +103,7 @@
 }
 
 .business-hours-card.is-closed {
-  background: #f3f4f3;
+  background: #f1f4f8;
 }
 
 .business-hours-card.is-closed > span {
@@ -166,7 +166,7 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  border: 1px solid #cfe2d5;
+  border: 1px solid #c6d9eb;
   border-radius: 9px;
   background: var(--color-accent-soft);
   color: var(--color-accent);
@@ -200,13 +200,13 @@
 
 .service-option:hover {
   transform: translateY(-1px);
-  border-color: #93b5a4;
+  border-color: #8eabc8;
 }
 
 .service-option.is-selected {
   border: 2px solid var(--color-accent);
   padding: 14px;
-  background: #f6fbf8;
+  background: #f1f7fe;
 }
 
 .service-option strong {
@@ -281,12 +281,12 @@
 
 .date-option.is-selected {
   border-color: var(--color-accent);
-  background: var(--color-accent);
+  background: var(--color-button-gradient);
   color: #fff;
 }
 
 .date-option.is-selected span {
-  color: #e4f2ea;
+  color: #e6f2fd;
 }
 
 .slot-heading {
@@ -325,7 +325,7 @@
 }
 
 .legend-available {
-  background: #67a982;
+  background: var(--color-accent);
 }
 
 .legend-full {
@@ -353,14 +353,14 @@
 
 .slot-option:hover:not(:disabled),
 .slot-option.is-selected {
-  background: var(--color-accent);
+  background: var(--color-button-gradient);
   color: #fff;
 }
 
 .slot-option:disabled {
   border-color: var(--color-border);
   background: var(--color-full-bg);
-  color: #68716c;
+  color: var(--color-muted);
   cursor: not-allowed;
 }
 
@@ -448,7 +448,7 @@
 .receipt-divider {
   height: 1px;
   margin: 9px 0 2px;
-  border-top: 1px dashed #cbd3ce;
+  border-top: 1px dashed #cad6e2;
 }
 
 .summary-card {
@@ -490,7 +490,7 @@
   gap: 10px;
   margin-top: 14px;
   padding-top: 13px;
-  border-top: 1px dashed #cbd3ce;
+  border-top: 1px dashed #cad6e2;
 }
 
 .receipt-total span {
@@ -553,7 +553,7 @@
   display: inline-block;
   margin-bottom: 20px;
   padding: 7px 12px;
-  border: 1px dashed #9cac9f;
+  border: 1px dashed #a9bfd5;
   border-radius: 7px;
   color: var(--color-text);
   font-weight: 700;
@@ -655,7 +655,7 @@
     padding: 11px max(15px, calc((100vw - 600px) / 2));
     border-top: 1px solid var(--color-border);
     background: var(--color-surface);
-    box-shadow: 0 -4px 16px rgba(22, 35, 28, .08);
+    box-shadow: 0 -4px 16px rgba(24, 55, 84, .08);
   }
 
   .mobile-receipt-bar > span {

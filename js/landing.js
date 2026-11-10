@@ -2,6 +2,8 @@
   "use strict";
   var ui = window.NamaProdukUI;
   var partners = [];
+  // Ganti jalur ini saat file logo platform sudah ditambahkan ke proyek.
+  var PLATFORM_LOGO_PATH = "images/logo.png";
   var dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
   var shortDayNames = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 
@@ -9,6 +11,7 @@
 
   async function initialize() {
     ui.applyProductName();
+    initializePlatformLogos();
     document.getElementById("current-year").textContent = new Date().getFullYear();
     bindFilters();
     var list = document.getElementById("partner-list");
@@ -24,6 +27,19 @@
         "Terjadi kendala saat memuat daftar mitra.";
       console.error("Gagal memuat direktori mitra:", error);
     }
+  }
+
+  function initializePlatformLogos() {
+    document.querySelectorAll("[data-platform-logo]").forEach(function (logo) {
+      logo.addEventListener("load", function () {
+        logo.hidden = false;
+        logo.closest(".brand").classList.add("has-platform-logo");
+      });
+      logo.addEventListener("error", function () {
+        logo.hidden = true;
+      });
+      logo.src = PLATFORM_LOGO_PATH;
+    });
   }
 
   function bindFilters() {

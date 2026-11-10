@@ -23,10 +23,29 @@
   color: var(--color-accent);
 }
 
+.platform-logo {
+  width: auto;
+  height: 36px;
+  max-width: 150px;
+  object-fit: contain;
+}
+
+.brand.has-platform-logo .brand-mark {
+  display: none;
+}
+
 .landing-hero {
+  position: relative;
+  isolation: isolate;
   padding: clamp(44px, 8vw, 94px) 0;
   border-bottom: 1px solid var(--color-border);
-  background: #f0f5f1;
+  background-color: #f4f8ff;
+  background-image:
+    radial-gradient(circle, rgba(52, 120, 255, .16) 1px, transparent 1.4px),
+    radial-gradient(ellipse at 18% 100%, rgba(87, 143, 255, .18), transparent 38%),
+    radial-gradient(ellipse at 78% 12%, rgba(190, 215, 255, .5), transparent 42%),
+    var(--color-hero-gradient);
+  background-size: 26px 26px, auto, auto, auto;
 }
 
 .hero-layout {
@@ -40,6 +59,11 @@
   max-width: 700px;
   margin-bottom: 17px;
   font-size: clamp(2.4rem, 5.8vw, 4.15rem);
+  color: #102b86;
+}
+
+.hero-highlight {
+  color: var(--color-accent-bright);
 }
 
 .hero-copy-block .eyebrow {
@@ -72,8 +96,12 @@
   padding: clamp(21px, 3vw, 30px);
   border: 1px solid var(--color-border);
   border-radius: 12px;
-  background: var(--color-surface);
-  box-shadow: var(--shadow);
+  background: linear-gradient(145deg, #ffffff 15%, #f4f8ff 100%);
+  box-shadow: 0 12px 30px rgba(36, 82, 177, .09);
+}
+
+.hero-summary li > span {
+  background: linear-gradient(145deg, #e4edff, #f3f7ff);
 }
 
 .hero-summary-label {
@@ -464,6 +492,19 @@
 
 .landing-footer {
   padding: 32px 0 17px;
+  border-top: 0;
+  background: linear-gradient(115deg, #102b86 0%, #1748d4 58%, #3478ff 100%);
+  color: #fff;
+}
+
+.landing-footer .brand {
+  color: #fff;
+}
+
+.landing-footer .brand-mark {
+  background: #fff;
+  color: #1d4ed8;
+  box-shadow: none;
 }
 
 .footer-main {
@@ -480,6 +521,7 @@
 .footer-brand > p {
   max-width: 310px;
   margin: 0;
+  color: #dce8ff;
   font-size: .82rem;
 }
 
@@ -492,14 +534,20 @@
 
 .footer-links strong {
   margin-bottom: 3px;
-  color: var(--color-text);
+  color: #fff;
   font-size: .82rem;
 }
 
 .footer-links a {
-  color: var(--color-muted);
+  color: #dce8ff;
   font-size: .8rem;
   text-decoration: none;
+}
+
+.landing-footer .footer-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .footer-bottom {
@@ -507,8 +555,8 @@
   justify-content: space-between;
   gap: 20px;
   padding-top: 14px;
-  border-top: 1px solid var(--color-border);
-  color: var(--color-muted);
+  border-top: 1px solid rgba(255, 255, 255, .24);
+  color: #dce8ff;
   font-size: .72rem;
 }
 
