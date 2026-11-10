@@ -118,10 +118,21 @@
     async getMitraBySlug(slug) {
       var result = await client()
         .from("mitra")
-        .select("id, slug, nama, kategori, alamat, telepon, jam_mulai, jam_selesai")
+        .select("id, slug, nama, kategori, alamat, jam_mulai, jam_selesai")
         .eq("slug", slug)
         .maybeSingle();
-      return mapMitra(throwIfError(result));
+      var profile = throwIfError(result);
+      if (!profile) return null;
+      var mitra = mapMitra(profile);
+      mitra.telepon = await api.getMitraPublicContact(slug);
+      return mitra;
+    },
+
+    async getMitraPublicContact(slug) {
+      var result = await client().rpc("get_mitra_public_contact", {
+        p_slug: slug,
+      });
+      return throwIfError(result);
     },
 
     async listLayanan(mitraId) {

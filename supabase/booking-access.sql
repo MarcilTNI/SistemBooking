@@ -1,5 +1,6 @@
 -- Run after the base tables exist and mitra.auth_user_id is linked to auth.users.
 -- Public clients can read shop/service listings and available slot labels only.
+-- Customer-facing merchant contacts are served through security-hardening.sql.
 -- Booking writes go through create_booking(), which serializes requests per shop.
 
 begin;
@@ -22,10 +23,10 @@ drop policy if exists "mitra can read own closures" on public.penutupan_jadwal;
 
 revoke all privileges on table public.mitra, public.layanan, public.booking, public.penutupan_jadwal
 from anon, authenticated, public;
-revoke select (id, slug, nama, kategori, alamat, telepon, jam_mulai, jam_selesai)
+revoke select (id, slug, nama, kategori, alamat, jam_mulai, jam_selesai)
 on public.mitra from anon;
 
-grant select (id, slug, nama, kategori, alamat, telepon, jam_mulai, jam_selesai)
+grant select (id, slug, nama, kategori, alamat, jam_mulai, jam_selesai)
 on public.mitra to anon;
 grant select (id, slug, nama, kategori, alamat, telepon, jam_mulai, jam_selesai, auth_user_id)
 on public.mitra to authenticated;

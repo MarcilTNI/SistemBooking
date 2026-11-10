@@ -15,6 +15,7 @@ Urutan ini mengasumsikan tabel dasar sudah dibuat dari setup sebelumnya.
 - Jalankan `supabase/tenant-scheduling.sql` di SQL Editor untuk menambahkan admin platform, jadwal per hari, dan pemesanan rombongan.
 - Jalankan `supabase/platform-contact.sql` setelahnya. Masuk ke dashboard admin untuk mengisi nomor WhatsApp admin platform dan mengelola nomor WhatsApp tiap mitra. Nomor dukungan tidak disimpan di source code; hanya admin platform yang bisa mengubahnya.
 - Jalankan `supabase/dashboard-realtime.sql` setelah migrasi jadwal dan kontak. Migrasi ini menambahkan waktu permintaan booking dan mengaktifkan Supabase Realtime untuk booking, layanan, serta jadwal; dashboard mitra menampilkan status koneksi jika Realtime belum aktif.
+- Jalankan `supabase/security-hardening.sql` setelah migrasi akses, jadwal, dan kontak. Migrasi ini mencabut akses baca langsung publik ke nomor mitra; halaman booking mengambil nomor WhatsApp usaha aktif melalui RPC khusus. Jalankan lagi migrasi ini jika kemudian menjalankan ulang `booking-access.sql` atau `tenant-scheduling.sql`.
 - Untuk mitra lama, migrasi mengisi jadwal awal dari jam operasional sebelumnya ke setiap hari. Periksa dan sesuaikan jadwal mingguan di dashboard sebelum membagikan link.
 - Buat user Supabase Auth khusus admin platform di **Authentication → Users**.
 - Ganti `ADMIN_EMAIL_HERE` pada `supabase/register-platform-admin.sql` dengan email admin, kemudian jalankan SQL itu di SQL Editor.
@@ -26,6 +27,7 @@ Urutan ini mengasumsikan tabel dasar sudah dibuat dari setup sebelumnya.
 
 - `/admin/index.html` — pengelola platform masuk dengan akun admin terpisah dan mendaftarkan usaha, layanan, jadwal mingguan, serta email pemilik yang sudah ada di Supabase Auth.
 - Nomor WhatsApp usaha di formulir admin dipakai pelanggan untuk menghubungi mitra setelah booking. Nomor mitra yang sudah terdaftar juga dapat diperbarui dari daftar usaha.
+- Nomor WhatsApp usaha adalah kontak publik yang memang ditujukan untuk pelanggan. Akses langsung ke kolom tabel ditutup untuk pengguna anonim, tetapi nomor yang dibutuhkan pada halaman booking tidak dapat dianggap rahasia dari pengunjung halaman.
 - `/booking.html?mitra=slug` — link yang dibagikan langsung membuka satu usaha, bukan direktori usaha lain.
 - Pelanggan dapat memilih hari ini atau 13 hari berikutnya; slot hari ini yang waktu mulainya sudah lewat tidak dapat dipesan.
 - Halaman booking menampilkan jam mingguan dalam kartu, form pelanggan, serta struk estimasi yang diperbarui saat pilihan berubah. Pada layar kecil, tombol bawah mengarahkan ke struk.
@@ -51,7 +53,7 @@ Urutan ini mengasumsikan tabel dasar sudah dibuat dari setup sebelumnya.
 - `js/booking.js`, `js/login.js`, `js/dashboard.js`, `js/landing.js` — interaksi tiap halaman.
 - `css/landing.css` — tata letak, navigasi, direktori mitra, dan bagian khusus beranda.
 - `js/admin.js` — pendaftaran mitra platform.
-- `supabase/booking-access.sql`, `supabase/tenant-scheduling.sql`, `supabase/platform-contact.sql`, `supabase/dashboard-realtime.sql` — kebijakan akses, fungsi database, pengaturan kontak WhatsApp, dan Realtime dashboard.
+- `supabase/booking-access.sql`, `supabase/tenant-scheduling.sql`, `supabase/platform-contact.sql`, `supabase/dashboard-realtime.sql`, `supabase/security-hardening.sql` — kebijakan akses, fungsi database, pengaturan kontak WhatsApp, Realtime dashboard, dan pembatasan data kontak mitra.
 - `supabase/register-platform-admin.sql` — memberi peran admin kepada akun Auth platform.
 - `supabase/clear-demo-data.sql` — penghapusan opsional data mitra contoh.
 
