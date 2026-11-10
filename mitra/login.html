@@ -11,53 +11,90 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/login.css" />
   </head>
   <body class="auth-page">
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="../index.html"
-          ><span class="brand-mark" aria-hidden="true">N</span
+          ><span class="brand-mark" aria-hidden="true">B</span
           ><span data-product-name>BookingYukk!</span></a
         ><a class="text-link" href="../index.html">Kembali ke beranda</a>
       </div>
     </header>
     <main class="auth-main">
-      <section class="auth-card">
-        <p class="eyebrow">Area mitra</p>
-        <h1>Masuk ke dashboard</h1>
-        <p class="muted">
-          Gunakan akun demo untuk mencoba pengelolaan booking.
-        </p>
-        <form id="login-form" class="auth-form" novalidate>
-          <label for="email">Email</label
-          ><input
-            id="email"
-            name="email"
-            type="email"
-            autocomplete="username"
-            required
-          />
-          <label for="password">Kata sandi</label
-          ><input
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            required
-          />
-          <div id="login-error" class="field-error" role="alert" hidden></div>
-          <button class="button button-primary button-full" type="submit">
-            Masuk
-          </button>
-        </form>
-        <div class="demo-accounts">
-          <h2>Akun mitra yang terhubung</h2>
-          <p><strong>Barbershop Rapi</strong><br /><span>rapi@demo.id</span></p>
-          <p class="field-hint">
-            Gunakan kata sandi yang dibuat untuk akun ini di Supabase Auth.
+      <div class="mitra-login-layout">
+        <section class="auth-card mitra-login-card" aria-labelledby="login-heading">
+          <p class="eyebrow">Portal mitra</p>
+          <h1 id="login-heading">Selamat datang kembali</h1>
+          <p class="login-intro">
+            Masuk untuk mengelola jadwal dan booking usahamu.
           </p>
-        </div>
-      </section>
+          <form id="login-form" class="auth-form" novalidate>
+            <label for="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="username"
+              placeholder="nama@email.com"
+              required
+            />
+            <label for="password">Kata sandi</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Masukkan kata sandi"
+              required
+            />
+            <div id="login-error" class="field-error" role="alert" hidden></div>
+            <button class="button button-primary button-full" type="submit">
+              Masuk ke dashboard
+            </button>
+          </form>
+          <div class="demo-accounts">
+            <h2>Akun mitra yang terhubung</h2>
+            <p><strong>Barbershop Rapi</strong><br /><span>rapi@demo.id</span></p>
+            <p class="field-hint">
+              Gunakan kata sandi yang dibuat untuk akun ini di Supabase Auth.
+            </p>
+          </div>
+        </section>
+        <aside class="login-showcase" aria-labelledby="showcase-heading">
+          <div class="showcase-copy">
+            <p class="showcase-kicker">BookingYukk! untuk mitra</p>
+            <h2 id="showcase-heading">Urus booking usaha, lebih teratur.</h2>
+            <p>
+              Pantau permintaan pelanggan, atur jadwal, dan kelola layanan
+              dalam satu dashboard.
+            </p>
+          </div>
+          <ul class="showcase-benefits">
+            <li><span aria-hidden="true">01</span> Lihat dan kelola booking pelanggan</li>
+            <li><span aria-hidden="true">02</span> Atur ketersediaan jadwal usahamu</li>
+            <li><span aria-hidden="true">03</span> Perbarui layanan dan harga</li>
+          </ul>
+          <div class="showcase-preview" aria-label="Ilustrasi ringkasan dashboard mitra">
+            <div class="preview-heading">
+              <div><span class="preview-caption">Contoh tampilan</span><strong>Ringkasan usaha</strong></div>
+              <span class="preview-day">Hari ini</span>
+            </div>
+            <div class="preview-stats" aria-hidden="true">
+              <div><span>Total booking</span><strong>08</strong></div>
+              <div><span>Menunggu</span><strong>03</strong></div>
+              <div><span>Slot kosong</span><strong>12</strong></div>
+            </div>
+            <div class="preview-booking" aria-hidden="true">
+              <span class="preview-booking-dot"></span>
+              <div><strong>Booking pelanggan</strong><span>Jadwal dan status dalam satu tempat</span></div>
+              <span class="preview-status">Menunggu</span>
+            </div>
+          </div>
+          <p class="showcase-note">Angka pada ilustrasi hanya contoh, bukan data usaha sebenarnya.</p>
+        </aside>
+      </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
     <script src="../js/supabase-client.js"></script>
