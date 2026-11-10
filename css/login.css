@@ -8,7 +8,7 @@
 .mitra-login-layout {
   display: grid;
   width: 100%;
-  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   align-items: stretch;
   overflow: hidden;
   border: 1px solid var(--color-border);
@@ -32,7 +32,7 @@
 
 .login-intro {
   margin-bottom: 25px;
-  font-size: .92rem;
+  font-size: 0.92rem;
 }
 
 .mitra-login-card .auth-form {
@@ -72,9 +72,9 @@
 .showcase-kicker {
   margin-bottom: 12px;
   color: var(--color-accent);
-  font-size: .78rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: .08em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -87,7 +87,7 @@
 .showcase-copy > p:last-child {
   max-width: 390px;
   margin-bottom: 19px;
-  font-size: .94rem;
+  font-size: 0.94rem;
 }
 
 .showcase-benefits {
@@ -103,7 +103,7 @@
   align-items: center;
   gap: 10px;
   color: var(--color-text);
-  font-size: .86rem;
+  font-size: 0.86rem;
 }
 
 .showcase-benefits li span {
@@ -116,7 +116,7 @@
   border-radius: 7px;
   background: var(--color-surface);
   color: var(--color-accent);
-  font-size: .68rem;
+  font-size: 0.68rem;
   font-weight: 700;
 }
 
@@ -142,11 +142,11 @@
 
 .preview-caption {
   color: var(--color-muted);
-  font-size: .7rem;
+  font-size: 0.7rem;
 }
 
 .preview-heading strong {
-  font-size: .95rem;
+  font-size: 0.95rem;
 }
 
 .preview-day {
@@ -154,7 +154,7 @@
   border: 1px solid var(--color-border);
   border-radius: 7px;
   color: var(--color-muted);
-  font-size: .73rem;
+  font-size: 0.73rem;
 }
 
 .preview-stats {
@@ -173,7 +173,7 @@
 
 .preview-stats span {
   color: var(--color-muted);
-  font-size: .68rem;
+  font-size: 0.68rem;
 }
 
 .preview-stats strong {
@@ -205,12 +205,12 @@
 }
 
 .preview-booking > div strong {
-  font-size: .78rem;
+  font-size: 0.78rem;
 }
 
 .preview-booking > div span {
   color: var(--color-muted);
-  font-size: .68rem;
+  font-size: 0.68rem;
 }
 
 .preview-status {
@@ -219,7 +219,7 @@
   border-radius: 99px;
   background: var(--color-pending-bg);
   color: var(--color-pending-text);
-  font-size: .65rem;
+  font-size: 0.65rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -227,7 +227,7 @@
 .showcase-note {
   margin: 9px 0 0;
   color: var(--color-muted);
-  font-size: .69rem;
+  font-size: 0.69rem;
 }
 
 @media (max-width: 760px) {
@@ -262,7 +262,7 @@
   }
 
   .showcase-benefits li {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 
   .showcase-preview {
@@ -301,7 +301,7 @@
   }
 
   .preview-stats span {
-    font-size: .62rem;
+    font-size: 0.62rem;
   }
 
   .preview-booking > div span {
