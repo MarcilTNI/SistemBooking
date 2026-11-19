@@ -17,6 +17,7 @@
     const list = document.getElementById("partner-list");
     try {
       partners = await window.NamaProdukAPI.listMitraDirektori();
+      populateCategoryFilter();
       list.setAttribute("aria-busy", "false");
       renderPartners();
     } catch (error) {
@@ -51,6 +52,17 @@
     });
   }
 
+  function populateCategoryFilter() {
+    const select = document.getElementById("partner-category");
+    const categories = [...new Set(partners.map((partner) => partner.kategori).filter(Boolean))]
+      .sort((first, second) => first.localeCompare(second, "id"));
+    select.innerHTML = '<option value="">Semua kategori</option>' +
+      categories.map((category) => {
+        return '<option value="' + ui.escapeHtml(category) + '">' +
+          ui.escapeHtml(category) + '</option>';
+      }).join("");
+  }
+
   function renderPartners() {
     const list = document.getElementById("partner-list");
     const error = document.getElementById("filter-error");
@@ -74,8 +86,10 @@
     const search = document.getElementById("partner-search").value
       .trim()
       .toLocaleLowerCase("id");
+    const category = document.getElementById("partner-category").value;
     const latestOpening = document.getElementById("latest-opening").value;
     const earliestClosing = document.getElementById("earliest-closing").value;
+    const sortOrder = document.getElementById("partner-sort").value;
     const filtered = partners.filter((partner) => {
       const searchable = [
         partner.nama,
@@ -86,9 +100,20 @@
       })).join(" ").toLocaleLowerCase("id");
 
       if (search && searchable.indexOf(search) === -1) return false;
+      if (category && partner.kategori !== category) return false;
       if (!matchesPrice(partner, min, max)) return false;
       if (!matchesHours(partner, latestOpening, earliestClosing)) return false;
       return true;
+    });
+
+    filtered.sort((first, second) => {
+      if (sortOrder === "harga-rendah") {
+        return comparePrice(first, second, 1);
+      }
+      if (sortOrder === "harga-tinggi") {
+        return comparePrice(first, second, -1);
+      }
+      return first.nama.localeCompare(second.nama, "id");
     });
 
     document.getElementById("partner-result-count").textContent =
@@ -123,6 +148,21 @@
       return (!latestOpening || day.jamMulai <= latestOpening) &&
         (!earliestClosing || day.jamSelesai >= earliestClosing);
     });
+  }
+
+  function getCheapestPrice(partner) {
+    return partner.layanan.reduce((lowest, service) => {
+      return Math.min(lowest, service.harga);
+    }, Number.POSITIVE_INFINITY);
+  }
+
+  function comparePrice(first, second, direction) {
+    const firstPrice = getCheapestPrice(first);
+    const secondPrice = getCheapestPrice(second);
+    if (!Number.isFinite(firstPrice)) return Number.isFinite(secondPrice) ? 1 : first.nama.localeCompare(second.nama, "id");
+    if (!Number.isFinite(secondPrice)) return -1;
+    return (firstPrice - secondPrice) * direction ||
+      first.nama.localeCompare(second.nama, "id");
   }
 
   function renderPartnerCard(partner, min, max) {

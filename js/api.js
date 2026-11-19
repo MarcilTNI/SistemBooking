@@ -1,7 +1,7 @@
 ((global) => {
   "use strict";
 
-  const PRODUCT_NAME = "BookingYukk!";
+  const PRODUCT_NAME = "bookingYukk";
 
   function client() {
     if (!global.NamaProdukSupabase) {

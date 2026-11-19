@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Temukan mitra usaha lokal, bandingkan layanan dan harga, lalu pesan jadwal dengan mudah di BookingYukk!."
+      content="Temukan mitra usaha lokal, bandingkan layanan dan harga, lalu pesan jadwal dengan mudah di bookingYukk."
     />
-    <title>BookingYukk! — Temukan layanan lokal</title>
+    <title>bookingYukk — Temukan layanan lokal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,15 +20,16 @@
   <body>
     <header class="site-header landing-header">
       <div class="container header-inner">
-        <a class="brand" href="#beranda" aria-label="BookingYukk!, beranda">
+        <a class="brand" href="#beranda" aria-label="bookingYukk, beranda">
           <img class="platform-logo" data-platform-logo alt="" aria-hidden="true" hidden />
-          <span class="brand-mark" aria-hidden="true">B</span>
-          <span data-product-name>BookingYukk!</span>
+          <span class="brand-mark" aria-hidden="true">b</span>
+          <span data-product-name>bookingYukk</span>
         </a>
         <nav class="landing-nav" aria-label="Navigasi utama">
           <a href="#cara-pesan">Cara pesan</a>
           <a href="#cari-mitra">Cari mitra</a>
           <a href="#testimoni">Cerita pelanggan</a>
+          <a href="#tanya-jawab">Tanya jawab</a>
         </nav>
         <a class="button button-secondary button-small" href="mitra/login.html">
           Masuk mitra
@@ -40,25 +41,42 @@
       <section class="landing-hero" id="beranda">
         <div class="container hero-layout">
           <div class="hero-copy-block">
-            <p class="eyebrow">Booking layanan lokal, lebih mudah</p>
-            <h1>Waktu luangmu, layanan <span class="hero-highlight">pilihanmu.</span></h1>
+            <p class="eyebrow">Pesan jadwal layanan lokal</p>
+            <h1>Pesan layanan tanpa antre, cukup dari <span class="hero-highlight">HP.</span></h1>
             <p class="hero-copy">
-              Temukan usaha di sekitarmu, bandingkan layanan dan harga, lalu
-              pilih jadwal yang cocok tanpa perlu membuat akun.
+              Pilih tempat, tentukan layanan dan jam yang masih tersedia, lalu
+              isi nama serta WhatsApp. Tidak perlu membuat akun atau memasang aplikasi.
             </p>
             <div class="hero-actions">
-              <a class="button button-primary" href="#cari-mitra">Cari layanan</a>
+              <a class="button button-primary" href="#cari-mitra">Cari tempat</a>
               <a class="text-link hero-secondary-link" href="#cara-pesan">Pelajari cara pesan</a>
             </div>
-            <p class="hero-assurance">Jadwal jelas · Pilih layanan sendiri · Konfirmasi langsung ke mitra</p>
+            <ul class="hero-benefits" aria-label="Keuntungan booking">
+              <li><span aria-hidden="true">✓</span>Tidak perlu buat akun</li>
+              <li><span aria-hidden="true">✓</span>Bayar langsung di tempat</li>
+              <li><span aria-hidden="true">✓</span>Lihat jam yang tersedia</li>
+            </ul>
           </div>
-          <aside class="hero-summary" aria-label="Cara kerja singkat BookingYukk!">
-            <p class="hero-summary-label">Mulai booking dalam 3 langkah</p>
-            <ol>
-              <li><span>1</span><div><strong>Pilih usaha</strong><small>Temukan mitra dan layanan yang kamu butuhkan.</small></div></li>
-              <li><span>2</span><div><strong>Tentukan jadwal</strong><small>Lihat pilihan waktu yang tersedia.</small></div></li>
-              <li><span>3</span><div><strong>Kirim permintaan</strong><small>Isi kontakmu, lalu tunggu konfirmasi mitra.</small></div></li>
-            </ol>
+          <aside class="booking-preview" aria-label="Ilustrasi bukti pesanan, bukan booking nyata">
+            <div class="preview-topline">
+              <span>Contoh bukti pesanan</span>
+              <span class="preview-badge">Ilustrasi</span>
+            </div>
+            <div class="preview-business">
+              <span class="preview-business-mark" aria-hidden="true">BR</span>
+              <div><strong>Barbershop Rapi</strong><small>Contoh usaha lokal</small></div>
+            </div>
+            <div class="preview-divider"></div>
+            <dl class="preview-details">
+              <div><dt>Layanan</dt><dd>Potong rambut · 30 menit</dd></div>
+              <div><dt>Jadwal</dt><dd>Tanggal pilihan · pukul 10.00 WIB</dd></div>
+              <div><dt>Perkiraan biaya</dt><dd>Rp 50.000 <small>dibayar di tempat</small></dd></div>
+            </dl>
+            <div class="preview-code">
+              <span>Kode pesanan</span>
+              <strong>BY-4821</strong>
+            </div>
+            <p class="preview-caption">Contoh kode yang akan diterima setelah booking berhasil.</p>
           </aside>
         </div>
       </section>
@@ -67,34 +85,29 @@
         <div class="container">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Mudah dan transparan</p>
-              <h2 id="how-heading">Cara memesan layanan</h2>
+              <p class="eyebrow">Mudah diikuti</p>
+              <h2 id="how-heading">Cara pesan cuma 3 langkah</h2>
             </div>
-            <p>Ikuti langkah sederhana ini untuk mengirim booking kepada usaha pilihanmu.</p>
+            <p>Ikuti langkah singkat ini untuk memilih usaha dan mengirim permintaan jadwal.</p>
           </div>
           <ol class="how-steps">
             <li class="how-card">
               <span class="step-index">01</span>
-              <h3>Pilih mitra</h3>
-              <p>Gunakan pencarian dan filter untuk menemukan usaha, layanan, harga, serta jam operasional yang sesuai.</p>
+              <h3>Pilih tempat dan layanan</h3>
+              <p>Cari usaha yang kamu inginkan, bandingkan harga, lalu buka halaman booking untuk memilih layanan.</p>
             </li>
             <li class="how-card">
               <span class="step-index">02</span>
-              <h3>Pilih layanan dan waktu</h3>
-              <p>Buka halaman booking mitra, tentukan layanan, tanggal, jumlah orang jika perlu, dan slot yang tersedia.</p>
+              <h3>Pilih tanggal dan jam kosong</h3>
+              <p>Lihat jadwal yang tersedia. Kamu juga bisa mengatur booking rombongan untuk 1–12 orang.</p>
             </li>
             <li class="how-card">
               <span class="step-index">03</span>
-              <h3>Kirim permintaan</h3>
-              <p>Isi nama dan nomor WhatsApp. Kamu akan menerima kode booking untuk memudahkan komunikasi.</p>
-            </li>
-            <li class="how-card">
-              <span class="step-index">04</span>
-              <h3>Tunggu konfirmasi</h3>
-              <p>Mitra akan meninjau permintaanmu. Hubungi mitra melalui WhatsApp jika perlu memastikan detail booking.</p>
+              <h3>Isi kontak dan kirim</h3>
+              <p>Masukkan nama dan nomor WhatsApp aktif. Setelah permintaan dikirim, simpan kode pesanan dan tunggu konfirmasi mitra.</p>
             </li>
           </ol>
-          <p class="booking-note">BookingYukk! membantu mengatur permintaan jadwal; pembayaran dan layanan dikonfirmasi langsung dengan mitra.</p>
+          <p class="booking-note"><strong>Masih ingin bertanya?</strong> Gunakan tombol WhatsApp di halaman booking untuk menghubungi usaha. Pembayaran dilakukan langsung di tempat.</p>
         </div>
       </section>
 
@@ -103,18 +116,22 @@
           <div class="section-heading directory-heading">
             <div>
               <p class="eyebrow">Jelajahi usaha terdaftar</p>
-              <h2 id="directory-heading">Cari mitra dan layanan</h2>
+              <h2 id="directory-heading">Cari tempat yang ingin kamu kunjungi</h2>
             </div>
-            <p>Bandingkan informasi usaha, layanan termurah, dan jam operasional sebelum memilih.</p>
+            <p>Pilih kategori, rentang harga, atau jam buka untuk menemukan layanan yang sesuai.</p>
           </div>
 
           <form class="directory-filters" id="directory-filter-form">
             <div class="filter-field filter-search">
-              <label for="partner-search">Nama usaha, kategori, atau layanan</label>
-              <input id="partner-search" type="search" placeholder="Contoh: barbershop, potong rambut" autocomplete="off" />
+              <label for="partner-search">Cari nama tempat atau layanan</label>
+              <input id="partner-search" type="search" placeholder="Contoh: barbershop, pijat" autocomplete="off" />
+            </div>
+            <div class="filter-field filter-category">
+              <label for="partner-category">Kategori</label>
+              <select id="partner-category"><option value="">Semua kategori</option></select>
             </div>
             <fieldset class="filter-field filter-price">
-              <legend>Rentang harga layanan (Rp)</legend>
+              <legend>Batas harga layanan</legend>
               <div class="filter-range-inputs">
                 <label for="minimum-price">Minimum<input id="minimum-price" type="number" min="0" step="5000" inputmode="numeric" placeholder="Tanpa batas" /></label>
                 <span aria-hidden="true">sampai</span>
@@ -122,13 +139,21 @@
               </div>
             </fieldset>
             <fieldset class="filter-field filter-hours">
-              <legend>Jam operasional</legend>
+              <legend>Jam buka</legend>
               <div class="filter-range-inputs">
                 <label for="latest-opening">Buka paling lambat<input id="latest-opening" type="time" /></label>
                 <span aria-hidden="true">dan</span>
                 <label for="earliest-closing">Tutup paling cepat<input id="earliest-closing" type="time" /></label>
               </div>
             </fieldset>
+            <div class="filter-field filter-sort">
+              <label for="partner-sort">Urutkan</label>
+              <select id="partner-sort">
+                <option value="nama">Nama A–Z</option>
+                <option value="harga-rendah">Harga mulai terendah</option>
+                <option value="harga-tinggi">Harga mulai tertinggi</option>
+              </select>
+            </div>
             <div class="filter-actions">
               <p id="filter-error" class="field-error" role="alert" hidden></p>
               <button class="button button-secondary button-small" id="reset-filters" type="reset">Hapus filter</button>
@@ -137,7 +162,7 @@
 
           <div class="directory-results-heading">
             <p id="partner-result-count" role="status" aria-live="polite">Memuat daftar mitra…</p>
-            <p class="directory-live-note">Informasi harga dan jadwal mengikuti data mitra.</p>
+            <p class="directory-live-note">Jadwal dan layanan mengikuti informasi terbaru dari mitra.</p>
           </div>
           <div class="partner-grid" id="partner-list" aria-live="polite" aria-busy="true">
             <p class="muted">Memuat mitra…</p>
@@ -149,10 +174,10 @@
         <div class="container">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Pengalaman yang diharapkan</p>
-              <h2 id="testimonial-heading">Booking jadi lebih terencana</h2>
+              <p class="eyebrow">Pengalaman pengguna</p>
+              <h2 id="testimonial-heading">Lebih tenang karena jadwal sudah jelas</h2>
             </div>
-            <p>Contoh berikut menggambarkan manfaat alur booking. Ini bukan ulasan pelanggan sungguhan.</p>
+            <p>Ilustrasi berikut menunjukkan manfaat melihat layanan dan waktu sebelum datang. Ini bukan ulasan pelanggan sungguhan.</p>
           </div>
           <div class="testimonial-grid">
             <article class="testimonial-card">
@@ -173,6 +198,47 @@
           </div>
         </div>
       </section>
+
+      <section class="faq-section section-space" id="tanya-jawab" aria-labelledby="faq-heading">
+        <div class="container faq-layout">
+          <div class="section-heading faq-heading">
+            <div>
+              <p class="eyebrow">Tanya jawab</p>
+              <h2 id="faq-heading">Pertanyaan yang sering ditanyakan</h2>
+            </div>
+            <p>Informasi singkat sebelum kamu memilih jadwal.</p>
+          </div>
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary>Apakah saya perlu membuat akun?</summary>
+              <p>Tidak. Kamu bisa memilih layanan dan mengirim permintaan booking dengan mengisi nama serta nomor WhatsApp.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Apakah pembayaran dilakukan melalui website?</summary>
+              <p>Tidak. Website membantu memilih dan mengirim permintaan jadwal. Pembayaran dilakukan langsung kepada mitra sesuai informasi layanan.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Bagaimana cara mengubah atau membatalkan booking?</summary>
+              <p>Hubungi mitra melalui WhatsApp yang tersedia di halaman booking dan sertakan kode pesanan agar permintaanmu mudah ditemukan.</p>
+            </details>
+            <details class="faq-item">
+              <summary>Saya pemilik usaha. Bagaimana cara masuk?</summary>
+              <p>Pemilik usaha yang sudah terdaftar dapat masuk ke dashboard mitra. Untuk pendaftaran usaha, silakan hubungi pengelola platform.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="owner-section section-space" id="untuk-mitra" aria-labelledby="owner-heading">
+        <div class="container owner-panel">
+          <div>
+            <p class="eyebrow">Untuk pemilik usaha</p>
+            <h2 id="owner-heading">Kelola booking pelanggan dari satu halaman</h2>
+            <p>Atur jadwal dan layanan, tinjau permintaan masuk, lalu hubungi pelanggan melalui WhatsApp.</p>
+          </div>
+          <a class="button button-primary" href="mitra/login.html">Masuk sebagai mitra</a>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer landing-footer">
@@ -181,7 +247,7 @@
           <a class="brand" href="#beranda">
             <img class="platform-logo" data-platform-logo alt="" aria-hidden="true" hidden />
             <span class="brand-mark" aria-hidden="true">B</span>
-            <span data-product-name>BookingYukk!</span>
+            <span data-product-name>bookingYukk</span>
           </a>
           <p>Temukan layanan lokal dan atur waktu booking dengan lebih praktis.</p>
         </div>
@@ -190,6 +256,7 @@
           <a href="#cara-pesan">Cara pesan</a>
           <a href="#cari-mitra">Cari mitra</a>
           <a href="#testimoni">Cerita pelanggan</a>
+          <a href="#tanya-jawab">Tanya jawab</a>
         </div>
         <div class="footer-links">
           <strong>Untuk mitra</strong>
@@ -198,7 +265,7 @@
         </div>
       </div>
       <div class="container footer-bottom">
-        <span>© <span id="current-year"></span> <span data-product-name>BookingYukk!</span></span>
+        <span>© <span id="current-year"></span> <span data-product-name>bookingYukk</span></span>
         <span>Prototipe booking usaha lokal. Layanan dan pembayaran dikonfirmasi langsung dengan mitra.</span>
       </div>
     </footer>

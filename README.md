@@ -1,4 +1,4 @@
-# BookingYukk! — prototipe booking usaha lokal
+# bookingYukk — prototipe booking usaha lokal
 
 Frontend HTML, CSS, dan JavaScript vanilla yang memakai Supabase untuk data mitra, layanan, booking, autentikasi, dan jadwal mingguan.
 
