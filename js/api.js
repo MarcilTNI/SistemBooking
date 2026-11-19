@@ -45,6 +45,17 @@
     };
   }
 
+  function mapJadwal(row) {
+    return {
+      hari: Number(row.hari),
+      buka: row.buka,
+      jamMulai: toTime(row.jam_mulai),
+      jamSelesai: toTime(row.jam_selesai),
+      istirahatMulai: toTime(row.istirahat_mulai),
+      istirahatSelesai: toTime(row.istirahat_selesai),
+    };
+  }
+
   function mapBooking(row) {
     let relatedService = Array.isArray(row.layanan) ? row.layanan[0] : row.layanan;
     return {
@@ -97,20 +108,21 @@
     },
 
     async listMitraDirektori() {
-      let mitra = await api.listMitra();
+      let result = await client()
+        .from("mitra")
+        .select("id, slug, nama, kategori, alamat, layanan ( id, mitra_id, nama, durasi, harga )")
+        .order("nama");
+      let mitra = throwIfError(result);
       return Promise.all(mitra.map(async (item) => {
-        let details = await Promise.all([
-          api.listLayanan(item.id),
-          api.getJadwalMingguan(item.id),
-        ]);
+        let jadwal = await api.getJadwalMingguan(item.id);
         return {
           id: item.id,
           slug: item.slug,
           nama: item.nama,
           kategori: item.kategori,
           alamat: item.alamat,
-          layanan: details[0],
-          jadwal: details[1],
+          layanan: (item.layanan || []).map(mapLayanan),
+          jadwal: jadwal,
         };
       }));
     },
@@ -400,16 +412,7 @@
       let result = await client().rpc("get_jadwal_operasional", {
         p_mitra_id: mitraId,
       });
-      return throwIfError(result).map((row) => {
-        return {
-          hari: Number(row.hari),
-          buka: row.buka,
-          jamMulai: toTime(row.jam_mulai),
-          jamSelesai: toTime(row.jam_selesai),
-          istirahatMulai: toTime(row.istirahat_mulai),
-          istirahatSelesai: toTime(row.istirahat_selesai),
-        };
-      });
+      return throwIfError(result).map(mapJadwal);
     },
 
     async simpanJadwalMingguan(mitraId, jadwal) {
